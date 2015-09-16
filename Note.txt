@@ -1,0 +1,4 @@
+To run this java example in windows 64bit, we need:
+1. Eclipse 32bit
+2. JDK 32bit
+3. Copy edk_v100.dll to SYSWOW64 folder
