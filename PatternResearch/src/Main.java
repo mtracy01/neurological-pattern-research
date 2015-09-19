@@ -1,12 +1,17 @@
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class Main {
+public class Main extends JPanel{
+	
 	public static void main(String[] args){
 		Pointer eEvent = Edk.INSTANCE.EE_EmoEngineEventCreate();
 		Pointer eState = Edk.INSTANCE.EE_EmoStateCreate();
 		IntByReference userID = null;
 		IntByReference nSamplesTaken = null;
+		
 		short composerPort = 1726;
 		int option = 1;
 		int state = 0;
@@ -15,7 +20,14 @@ public class Main {
 
 		userID = new IntByReference(0);
 		nSamplesTaken = new IntByReference(0);
-
+		JButton report = new JButton("Report");
+		JButton exit = new JButton("Exit");
+		JButton beginRed = new JButton("Begin Recording");
+		JButton pauseRed = new JButton("Pause Recording");
+		
+		String mainMenu = "Main Menu";
+		
+		
 		switch (option) {
 		case 1: {
 			if (Edk.INSTANCE.EE_EngineConnect("Emotiv Systems-5") != EdkErrorCode.EDK_OK
