@@ -11,7 +11,11 @@ public class GUI extends JPanel implements ActionListener{
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(400,500);
 
-		JPanel whole = new JPanel(new GridLayout(2,0));
+		JPanel whole = new JPanel(new GridLayout(3,0));
+		JPanel buttontop = new JPanel();
+		JLabel label = new JLabel("Main Menu");
+		label.setFont(new Font("TimesRoman", Font.ITALIC, 25));
+		buttontop.add(label);
 		
 		JPanel buttonup = new JPanel(new GridLayout(3,1));
 		JPanel buttonlow = new JPanel();
@@ -45,7 +49,7 @@ public class GUI extends JPanel implements ActionListener{
 		
 		buttonup.add(dataEvent);
 		buttonlow.add(exitEvent);
-	
+		whole.add(buttontop);
 		whole.add(buttonup);
 		whole.add(buttonlow);
 
