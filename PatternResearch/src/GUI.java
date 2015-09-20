@@ -2,6 +2,7 @@
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 import java.awt.event.*;
 
@@ -22,19 +23,28 @@ public class GUI extends JPanel implements ActionListener{
 		BoxLayout boxLayout = new BoxLayout(buttonlow, BoxLayout.LINE_AXIS);
 		buttonlow.setLayout(boxLayout);
 		
-		JButton reportEvent = new JButton("Report Event");
+		JButton reportEvent = new JButton("Record Event");
 	    reportEvent.setVerticalTextPosition(AbstractButton.CENTER);
-	    //reportEvent.setHorizontalTextPosition(AbstractButton.LEFT);
+	   
 	    reportEvent.setPreferredSize(new Dimension(40,40));
 	    reportEvent.setMnemonic(KeyEvent.VK_D);
+	    reportEvent.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+            	createFrame();
+                
+            }
+        });
 	  
-		JButton beginRecording = new JButton("Begin Reporting");
+		JButton beginRecording = new JButton("Learn From Data");
 		beginRecording.setVerticalTextPosition(AbstractButton.CENTER);
 		beginRecording.setPreferredSize(new Dimension(40,40));
 		//beginRecording.setHorizontalTextPosition(AbstractButton.RIGHT); 
 		beginRecording.setMnemonic(KeyEvent.VK_D);
 	    
-		JButton dataEvent = new JButton("Review Data");
+		JButton dataEvent = new JButton("Recognizing");
 		dataEvent.setPreferredSize(new Dimension(40,40));
 		dataEvent.setHorizontalTextPosition(AbstractButton.CENTER);
 		dataEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
@@ -70,5 +80,60 @@ public class GUI extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
+	public static void createFrame()
+    {
+        EventQueue.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                JFrame frame = new JFrame("User Information");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                try 
+                {
+                   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                panel.setOpaque(true);
+                JLabel title1 = new JLabel("                Record Event");
+                title1.setFont(new Font("TimesRoman", Font.ITALIC, 25));
+                
+                JTextField duration = new JTextField(15);
+                JTextField number = new JTextField(15);
+                duration.setFont(Font.getFont(Font.SANS_SERIF));
+                JLabel name = new JLabel("name");
+                JLabel lduration = new JLabel("duration");
+                JLabel lnumber = new JLabel("counts");
+                
+                JPanel inputpanel = new JPanel();
+                inputpanel.setLayout(new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
+                JTextField input = new JTextField(15);
+                JButton button = new JButton("Enter");
+              /*  DefaultCaret caret = (DefaultCaret) duration.getCaret();
+                caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);*/
+                inputpanel.add(title1);
+                inputpanel.add(name);
+                inputpanel.add(input);
+           
+                inputpanel.add(lduration);
+                inputpanel.add(duration);
+               
+                inputpanel.add(lnumber);
+                inputpanel.add(number);
+                
+                inputpanel.add(button);
+                panel.add(inputpanel);
+                frame.getContentPane().add(BorderLayout.CENTER, panel);
+                frame.pack();
+                frame.setLocationByPlatform(true);
+                frame.setVisible(true);
+                frame.setResizable(false);
+                input.requestFocus();
+            }
+        });
+    }
 	
 }
