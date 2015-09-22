@@ -7,13 +7,8 @@ import javax.swing.*;
 public class Main extends JPanel{
 	
 	public static void main(String[] args){
+		GUI gui = new GUI();
 		
-		JButton report = new JButton("Report");
-		JButton exit = new JButton("Exit");
-		JButton beginRed = new JButton("Begin Recording");
-		JButton pauseRed = new JButton("Pause Recording");
-		
-		String mainMenu = "Main Menu";
 		
 	}
 	

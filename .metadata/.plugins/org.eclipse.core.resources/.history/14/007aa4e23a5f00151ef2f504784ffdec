@@ -1,0 +1,139 @@
+
+import java.awt.*;
+
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+
+import java.awt.event.*;
+
+public class GUI extends JPanel implements ActionListener{
+	public GUI(){
+		JFrame f = new JFrame("Display Window");
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(400,500);
+
+		JPanel whole = new JPanel(new GridLayout(3,0));
+		JPanel buttontop = new JPanel();
+		JLabel label = new JLabel("Main Menu");
+		label.setFont(new Font("TimesRoman", Font.ITALIC, 25));
+		buttontop.add(label);
+		
+		JPanel buttonup = new JPanel(new GridLayout(3,1));
+		JPanel buttonlow = new JPanel();
+		BoxLayout boxLayout = new BoxLayout(buttonlow, BoxLayout.LINE_AXIS);
+		buttonlow.setLayout(boxLayout);
+		
+		JButton reportEvent = new JButton("Report Event");
+	    reportEvent.setVerticalTextPosition(AbstractButton.CENTER);
+	    //reportEvent.setHorizontalTextPosition(AbstractButton.LEFT);
+	    reportEvent.setPreferredSize(new Dimension(40,40));
+	    reportEvent.setMnemonic(KeyEvent.VK_D);
+	    reportEvent.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+            	createFrame();
+                
+            }
+        });
+	  
+		JButton beginRecording = new JButton("Begin Reporting");
+		beginRecording.setVerticalTextPosition(AbstractButton.CENTER);
+		beginRecording.setPreferredSize(new Dimension(40,40));
+		//beginRecording.setHorizontalTextPosition(AbstractButton.RIGHT); 
+		beginRecording.setMnemonic(KeyEvent.VK_D);
+	    
+		JButton dataEvent = new JButton("Review Data");
+		dataEvent.setPreferredSize(new Dimension(40,40));
+		dataEvent.setHorizontalTextPosition(AbstractButton.CENTER);
+		dataEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
+		
+		JButton exitEvent = new JButton("Exit");
+		
+		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
+		exitEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
+			
+		buttonup.add(reportEvent);
+		buttonup.add(beginRecording);
+		
+		buttonup.add(dataEvent);
+		buttonlow.add(exitEvent);
+		whole.add(buttontop);
+		whole.add(buttonup);
+		whole.add(buttonlow);
+
+		f.getContentPane().add(whole);
+
+		f.setVisible(true);
+		
+		
+	}
+
+	public static void main(String args[]){
+		 GUI g = new GUI();
+
+	}
+
+	
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void createFrame()
+    {
+        EventQueue.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                JFrame frame = new JFrame("User Information");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                try 
+                {
+                   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                panel.setOpaque(true);
+                JLabel title1 = new JLabel("                Report Event");
+                title1.setFont(new Font("TimesRoman", Font.ITALIC, 25));
+                
+                JTextField duration = new JTextField(15);
+                JTextField number = new JTextField(15);
+                duration.setFont(Font.getFont(Font.SANS_SERIF));
+                JLabel name = new JLabel("name");
+                JLabel lduration = new JLabel("duration");
+                JLabel lnumber = new JLabel("counts");
+                
+                JPanel inputpanel = new JPanel();
+                inputpanel.setLayout(new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
+                JTextField input = new JTextField(15);
+                JButton button = new JButton("Enter");
+              /*  DefaultCaret caret = (DefaultCaret) duration.getCaret();
+                caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);*/
+                inputpanel.add(title1);
+                inputpanel.add(name);
+                inputpanel.add(input);
+           
+                inputpanel.add(lduration);
+                inputpanel.add(duration);
+               
+                inputpanel.add(lnumber);
+                inputpanel.add(number);
+                
+                inputpanel.add(button);
+                panel.add(inputpanel);
+                frame.getContentPane().add(BorderLayout.CENTER, panel);
+                frame.pack();
+                frame.setLocationByPlatform(true);
+                frame.setVisible(true);
+                frame.setResizable(false);
+                input.requestFocus();
+            }
+        });
+    }
+	
+}

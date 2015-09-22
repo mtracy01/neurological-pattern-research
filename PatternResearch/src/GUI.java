@@ -86,7 +86,8 @@ public class GUI extends JPanel implements ActionListener{
         {
             @Override
             public void run()
-            {
+            {	
+
                 JFrame frame = new JFrame("User Information");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 try 
@@ -112,8 +113,6 @@ public class GUI extends JPanel implements ActionListener{
                 inputpanel.setLayout(new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
                 JTextField input = new JTextField(15);
                 JButton button = new JButton("Enter");
-              /*  DefaultCaret caret = (DefaultCaret) duration.getCaret();
-                caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);*/
                 inputpanel.add(title1);
                 inputpanel.add(name);
                 inputpanel.add(input);
@@ -132,6 +131,25 @@ public class GUI extends JPanel implements ActionListener{
                 frame.setVisible(true);
                 frame.setResizable(false);
                 input.requestFocus();
+                button.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String modeName = name.getText();
+		            	double durationnum = 0;
+		            	int numbernum = 0;
+						try{
+							durationnum = Double.parseDouble(duration.getText());
+							numbernum = Integer.parseInt(number.getText());
+						}catch(Exception e1){
+							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
+						};	
+						System.out.println("duration is"+durationnum+"and number is "+ numbernum );
+						Main.logData(modeName,numbernum,durationnum);
+						
+					}
+                	
+                });
             }
         });
     }
