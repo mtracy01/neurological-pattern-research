@@ -1,4 +1,5 @@
 import com.sun.jna.Pointer;
+
 import com.sun.jna.ptr.IntByReference;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,17 +8,13 @@ import java.util.Hashtable;
 import javax.swing.*;
 import java.util.*;
 import java.util.Timer;
+
 public class Main extends JPanel{
 	
-<<<<<<< HEAD
-=======
-	public Hashtable<String,RawData> rawPatterns = new Hashtable<>();
->>>>>>> 55a3b8a1c6fec95d7ea80fa26334956eba3e3140
+	public static Hashtable<String,RawData> rawPatterns = new Hashtable<>();
 	
 	public static void main(String[] args){
 		GUI gui = new GUI();
-		
-		
 	}
 	
 	//Record a certain number of raw inputs and store them into some sort of database
@@ -71,15 +68,23 @@ public class Main extends JPanel{
 		System.out.println(secs);
 
 		System.out.println("Start receiving EEG Data!");
-		for(int j=0;j< numRecordings;j++){
-			//TODO: Add 5 second delay before collection start and at UI elements to compliment this
-<<<<<<< HEAD
+		//TODO: Add 5 second delay before collection start and at UI elements to compliment this
+		Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask(){
+			public void run(){
+				//TODO: Ji has to add the countdown ui here :)
+			}
 			
+		}, 1,5000);
+		for(int j=0;j< numRecordings;j++){
+			
+			
+			ArrayList<double[]> data2 = new ArrayList<>();
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){ //)
 			//while (true) { //TODO: Change this to a counting down event, store data into whatever we use to store data...
 				
-				ArrayList<double[]> data = new ArrayList<>();
+				ArrayList<double[]> data2 = new ArrayList<>();
 				
 				public void run(){
 					IntByReference userID = null;
@@ -130,59 +135,18 @@ public class Main extends JPanel{
 										System.out.print(data[sampleIdx]);
 										System.out.print(",");
 									}
+									data2.add(data);
 									System.out.println();
-=======
-			//TODO: Add a timer here
-			while (true) { //TODO: Change this to a counting down event, store data into whatever we use to store data...
-				state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent);
-	
-				// New event needs to be handled
-				if (state == EdkErrorCode.EDK_OK.ToInt()) {
-					int eventType = Edk.INSTANCE.EE_EmoEngineEventGetType(eEvent);
-					Edk.INSTANCE.EE_EmoEngineEventGetUserId(eEvent, userID);
-	
-					// Log the EmoState if it has been updated
-					if (eventType == Edk.EE_Event_t.EE_UserAdded.ToInt())
-						if (userID != null) {
-							System.out.println("User added");
-							Edk.INSTANCE.EE_DataAcquisitionEnable(
-									userID.getValue(), true);
-							readytocollect = true;
-						}
-				} else if (state != EdkErrorCode.EDK_NO_EVENT.ToInt()) {
-					System.out.println("Internal error in Emotiv Engine!");
-					break;
-				}
-	
-				if (readytocollect) {
-					Edk.INSTANCE.EE_DataUpdateHandle(0, hData);
-	
-					Edk.INSTANCE.EE_DataGetNumberOfSample(hData, nSamplesTaken);
-	
-					if (nSamplesTaken != null) {
-						if (nSamplesTaken.getValue() != 0) {
-	
-							System.out.print("Updated: ");
-							System.out.println(nSamplesTaken.getValue());
-	
-							double[] data = new double[nSamplesTaken.getValue()];
-							for (int sampleIdx = 0; sampleIdx < nSamplesTaken
-									.getValue(); ++sampleIdx) {
-								for (int i = 0; i < 17; i++) {
-	
-									Edk.INSTANCE.EE_DataGet(hData, i, data,
-											nSamplesTaken.getValue());
-									System.out.print(data[sampleIdx]);
-									System.out.print(",");
->>>>>>> 55a3b8a1c6fec95d7ea80fa26334956eba3e3140
 								}
 							}
 						}
 					}
 				}
-			}, 100, 100);
-		} 
-
+			}, (long)0, (long)recordingDuration*1000);
+			rawData.addRecordedPattern((ArrayList<double[]>)data2.clone());
+			data2.clear();
+		}
+		rawPatterns.put(dataName,rawData);
 		Edk.INSTANCE.EE_EngineDisconnect();
 		Edk.INSTANCE.EE_EmoStateFree(eState);
 		Edk.INSTANCE.EE_EmoEngineEventFree(eEvent);
