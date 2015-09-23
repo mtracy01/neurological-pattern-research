@@ -43,8 +43,7 @@ public class GUI extends JPanel implements ActionListener{
 	  
 		JButton beginRecording = new JButton("Learn From Data");
 		beginRecording.setVerticalTextPosition(AbstractButton.CENTER);
-		beginRecording.setPreferredSize(new Dimension(40,40));
-		//beginRecording.setHorizontalTextPosition(AbstractButton.RIGHT); 
+		beginRecording.setPreferredSize(new Dimension(40,40)); 
 		beginRecording.setMnemonic(KeyEvent.VK_D);
 	    
 		JButton dataEvent = new JButton("Recognizing");
@@ -115,7 +114,7 @@ public class GUI extends JPanel implements ActionListener{
                 JPanel inputpanel = new JPanel();
                 inputpanel.setLayout(new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
                 JTextField input = new JTextField(15);
-                JButton button = new JButton(new AbstractAction("Enter"){
+                JButton button = new JButton(new AbstractAction("Start Recording"){
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -127,8 +126,8 @@ public class GUI extends JPanel implements ActionListener{
 							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
 						};	
 						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
-						//Main.logData(modeName,numbernum,durationnum);
-						
+						recordEvent();
+					
 					}
                 	
                 });
@@ -154,5 +153,16 @@ public class GUI extends JPanel implements ActionListener{
             }
         });
     }
-	
+	public static void recordEvent(){
+		JFrame f1 = new JFrame("Recording");
+		f1.setSize(300,300);
+		JPanel panel= new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setOpaque(true);
+        JLabel title = new JLabel("                Recording ..");
+        panel.add(title);
+        f1.add(panel);
+        f1.setVisible(true);
+		
+	}
 }
