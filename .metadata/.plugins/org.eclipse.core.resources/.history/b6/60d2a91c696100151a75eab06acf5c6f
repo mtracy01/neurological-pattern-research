@@ -2,13 +2,9 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Hashtable;
-
 import javax.swing.*;
 
 public class Main extends JPanel{
-	
-	public Hashtable<String,RawData> rawPatterns = new Hashtable<>();
 	
 	public static void main(String[] args){
 		GUI gui = new GUI();
@@ -29,8 +25,6 @@ public class Main extends JPanel{
 		int state = 0;
 		float secs = 1;
 		boolean readytocollect = false;
-		
-		RawData rawData = new RawData(dataName, numRecordings, recordingDuration);
 		
 		//Confirm connection to device
 		switch (option) {
@@ -69,7 +63,7 @@ public class Main extends JPanel{
 		System.out.println("Start receiving EEG Data!");
 		for(int j=0;j< numRecordings;j++){
 			//TODO: Add 5 second delay before collection start and at UI elements to compliment this
-			//TODO: Add a timer here
+			
 			while (true) { //TODO: Change this to a counting down event, store data into whatever we use to store data...
 				state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent);
 	

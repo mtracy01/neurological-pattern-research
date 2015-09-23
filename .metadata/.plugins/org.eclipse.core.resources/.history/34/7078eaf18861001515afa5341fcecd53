@@ -7,9 +7,6 @@ import javax.swing.text.DefaultCaret;
 import java.awt.event.*;
 
 public class GUI extends JPanel implements ActionListener{
-	static String modeName;
-	static int numbernum;
-	static double durationnum;
 	public GUI(){
 		JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,23 +112,7 @@ public class GUI extends JPanel implements ActionListener{
                 JPanel inputpanel = new JPanel();
                 inputpanel.setLayout(new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
                 JTextField input = new JTextField(15);
-                JButton button = new JButton(new AbstractAction("Enter"){
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						modeName = input.getText();
-						try{
-							durationnum = Double.parseDouble(duration.getText());
-							numbernum = Integer.parseInt(number.getText());
-						}catch(Exception e1){
-							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
-						};	
-						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
-						//Main.logData(modeName,numbernum,durationnum);
-						
-					}
-                	
-                });
+                JButton button = new JButton("Enter");
                 inputpanel.add(title1);
                 inputpanel.add(name);
                 inputpanel.add(input);
@@ -150,7 +131,25 @@ public class GUI extends JPanel implements ActionListener{
                 frame.setVisible(true);
                 frame.setResizable(false);
                 input.requestFocus();
-               
+                button.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String modeName = name.getText();
+		            	double durationnum = 0;
+		            	int numbernum = 0;
+						try{
+							durationnum = Double.parseDouble(duration.getText());
+							numbernum = Integer.parseInt(number.getText());
+						}catch(Exception e1){
+							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
+						};	
+						System.out.println("duration is"+durationnum+"and number is "+ numbernum );
+						Main.logData(modeName,numbernum,durationnum);
+						
+					}
+                	
+                });
             }
         });
     }

@@ -126,7 +126,7 @@ public class GUI extends JPanel implements ActionListener{
 						}catch(Exception e1){
 							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
 						};	
-						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
+						System.out.println("name is "+modeName+"duration is"+durationnum+"and number is "+ numbernum );
 						//Main.logData(modeName,numbernum,durationnum);
 						
 					}
@@ -150,7 +150,23 @@ public class GUI extends JPanel implements ActionListener{
                 frame.setVisible(true);
                 frame.setResizable(false);
                 input.requestFocus();
-               
+               /* button.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String modeName = name.getText();
+						try{
+							durationnum = Double.parseDouble(duration.getText());
+							numbernum = Integer.parseInt(number.getText());
+						}catch(Exception e1){
+							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
+						};	
+						System.out.println("duration is"+durationnum+"and number is "+ numbernum );
+						Main.logData(modeName,numbernum,durationnum);
+						
+					}
+                	
+                });*/
             }
         });
     }
