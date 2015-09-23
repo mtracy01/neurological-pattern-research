@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <qualifiedTypeNameHistroy/>
+=======
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javax.swing.text.DefaultCaret"/>
+<fullyQualifiedTypeName name="java.util.Hashtable"/>
+</qualifiedTypeNameHistroy>
+>>>>>>> 55a3b8a1c6fec95d7ea80fa26334956eba3e3140

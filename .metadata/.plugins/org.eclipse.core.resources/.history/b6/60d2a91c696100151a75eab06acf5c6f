@@ -2,17 +2,9 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Hashtable;
-
 import javax.swing.*;
-import java.util.*;
-import java.util.Timer;
+
 public class Main extends JPanel{
-	
-<<<<<<< HEAD
-=======
-	public Hashtable<String,RawData> rawPatterns = new Hashtable<>();
->>>>>>> 55a3b8a1c6fec95d7ea80fa26334956eba3e3140
 	
 	public static void main(String[] args){
 		GUI gui = new GUI();
@@ -33,8 +25,6 @@ public class Main extends JPanel{
 		int state = 0;
 		float secs = 1;
 		boolean readytocollect = false;
-		
-		RawData rawData = new RawData(dataName, numRecordings, recordingDuration);
 		
 		//Confirm connection to device
 		switch (option) {
@@ -73,66 +63,7 @@ public class Main extends JPanel{
 		System.out.println("Start receiving EEG Data!");
 		for(int j=0;j< numRecordings;j++){
 			//TODO: Add 5 second delay before collection start and at UI elements to compliment this
-<<<<<<< HEAD
 			
-			Timer timer = new Timer();
-			timer.scheduleAtFixedRate(new TimerTask(){ //)
-			//while (true) { //TODO: Change this to a counting down event, store data into whatever we use to store data...
-				
-				ArrayList<double[]> data = new ArrayList<>();
-				
-				public void run(){
-					IntByReference userID = null;
-					IntByReference nSamplesTaken = null;
-					userID = new IntByReference(0);
-					nSamplesTaken = new IntByReference(0);
-					int option = 1;
-					int state = 0;
-					float secs = 1;
-					boolean readytocollect = false;
-					state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent);
-		
-					// New event needs to be handled
-					if (state == EdkErrorCode.EDK_OK.ToInt()) {
-						int eventType = Edk.INSTANCE.EE_EmoEngineEventGetType(eEvent);
-						Edk.INSTANCE.EE_EmoEngineEventGetUserId(eEvent, userID);
-		
-						// Log the EmoState if it has been updated
-						if (eventType == Edk.EE_Event_t.EE_UserAdded.ToInt())
-							if (userID != null) {
-								System.out.println("User added");
-								Edk.INSTANCE.EE_DataAcquisitionEnable(
-										userID.getValue(), true);
-								readytocollect = true;
-							}
-					} else if (state != EdkErrorCode.EDK_NO_EVENT.ToInt()) {
-						System.out.println("Internal error in Emotiv Engine!");
-					}
-		
-					if (readytocollect) {
-						Edk.INSTANCE.EE_DataUpdateHandle(0, hData);
-		
-						Edk.INSTANCE.EE_DataGetNumberOfSample(hData, nSamplesTaken);
-		
-						if (nSamplesTaken != null) {
-							if (nSamplesTaken.getValue() != 0) {
-		
-								System.out.print("Updated: ");
-								System.out.println(nSamplesTaken.getValue());
-		
-								double[] data = new double[nSamplesTaken.getValue()];
-								for (int sampleIdx = 0; sampleIdx < nSamplesTaken
-										.getValue(); ++sampleIdx) {
-									for (int i = 0; i < 17; i++) {
-		
-										Edk.INSTANCE.EE_DataGet(hData, i, data,
-												nSamplesTaken.getValue());
-										System.out.print(data[sampleIdx]);
-										System.out.print(",");
-									}
-									System.out.println();
-=======
-			//TODO: Add a timer here
 			while (true) { //TODO: Change this to a counting down event, store data into whatever we use to store data...
 				state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent);
 	
@@ -174,14 +105,14 @@ public class Main extends JPanel{
 											nSamplesTaken.getValue());
 									System.out.print(data[sampleIdx]);
 									System.out.print(",");
->>>>>>> 55a3b8a1c6fec95d7ea80fa26334956eba3e3140
 								}
+								System.out.println();
 							}
 						}
 					}
 				}
-			}, 100, 100);
-		} 
+			}
+		}
 
 		Edk.INSTANCE.EE_EngineDisconnect();
 		Edk.INSTANCE.EE_EmoStateFree(eState);
