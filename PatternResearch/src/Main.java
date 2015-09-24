@@ -72,7 +72,7 @@ public class Main extends JPanel{
 		Timer t = new Timer();
 		t.scheduleAtFixedRate(new TimerTask(){
 			public void run(){
-				//TODO: Ji has to add the countdown ui here :)
+				GUI.recordEvent();
 			}
 			
 		}, 1,5000);

@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 import java.awt.event.*;
+import java.util.*;
+import java.util.Timer;
 
 public class GUI extends JPanel implements ActionListener{
 	static String modeName;
@@ -127,7 +129,7 @@ public class GUI extends JPanel implements ActionListener{
 						};	
 						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
 						recordEvent();
-					
+						recordProcess(30.0);
 					}
                 	
                 });
@@ -153,6 +155,8 @@ public class GUI extends JPanel implements ActionListener{
             }
         });
     }
+	
+	
 	public static void recordEvent(){
 		JFrame f1 = new JFrame("Recording");
 		f1.setSize(300,300);
@@ -160,9 +164,59 @@ public class GUI extends JPanel implements ActionListener{
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(true);
         JLabel title = new JLabel("                Recording ..");
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int i = Integer.parseInt("6");
+            public void run() {
+                System.out.println(i--);
+                title.setText("Remaining time: " + Integer.toString(i));
+                title.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+                if (i< 1){
+                    timer.cancel();
+                	f1.setVisible(false);
+                }
+            }
+        }, 0, 1000);
         panel.add(title);
         f1.add(panel);
         f1.setVisible(true);
 		
 	}
+	public static void recordProcess(final double durationTime){
+		JFrame f1 = new JFrame("Recording");
+		f1.setSize(400,300);
+		f1.setBackground(Color.WHITE);
+		JPanel panel= new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        JLabel mname = new JLabel("Mode Name: "+modeName);
+        mname.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        JLabel mdu = new JLabel("Duration time:  "+durationnum);
+        mdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        JLabel rdu = new JLabel("Remaining Time: ");
+        rdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        JLabel mnum = new JLabel("Number :" +numbernum); 
+        mnum.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+        	double t = durationTime;
+            public void run() {
+                System.out.println(t);
+                mdu.setText("Remaining time: " + Double.toString(t));
+               // title.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+                if ((t--)< 1.0){
+                    timer.cancel();
+                	f1.setVisible(false);
+                }
+            }
+        }, 0, 1000);
+        panel.add(mname);
+        panel.add(mdu);
+        panel.add(rdu);
+        panel.add(mnum);
+        f1.add(panel);
+        f1.setVisible(true);
+		
+	}
+	
 }
