@@ -21,4 +21,10 @@ public class RawData {
 			return data.get(index);
 		return null;
 	}
+	public int getCount(){
+		return count;
+	}
+	public String getName(){
+		return dataName;
+	}
 }
