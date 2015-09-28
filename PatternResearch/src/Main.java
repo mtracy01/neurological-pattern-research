@@ -6,6 +6,9 @@ import java.awt.event.*;
 import java.util.Hashtable;
 
 import javax.swing.*;
+
+import org.neuroph.core.data.DataSet;
+
 import java.util.*;
 import java.util.Timer;
 
@@ -153,5 +156,122 @@ public class Main extends JPanel{
 		Edk.INSTANCE.EE_EmoStateFree(eState);
 		Edk.INSTANCE.EE_EmoEngineEventFree(eEvent);
 		System.out.println("Disconnected!");
+	}
+	
+	
+	
+	
+	public static boolean recognizing= false;
+	//TODO: Implement Recognition task here
+	//Note: THIS MUST BE CALLED ASYNCHRONOUSLY OR IT WILL MESS THINGS UP!!!!!
+	public static void startRecognition(){
+		recognizing=true;
+		while(recognizing){
+			Pointer hData = Edk.INSTANCE.EE_DataCreate();
+			Edk.INSTANCE.EE_DataSetBufferSizeInSec(1);
+			IntByReference userID = null;
+			IntByReference nSamplesTaken = null;
+			userID = new IntByReference(0);
+			nSamplesTaken = new IntByReference(0);
+			int option = 1;
+			int state = 0;
+			float secs = 1;
+			boolean readytocollect = false;
+			state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent);
+
+			// New event needs to be handled
+			if (state == EdkErrorCode.EDK_OK.ToInt()) {
+				int eventType = Edk.INSTANCE.EE_EmoEngineEventGetType(eEvent);
+				Edk.INSTANCE.EE_EmoEngineEventGetUserId(eEvent, userID);
+
+				// Log the EmoState if it has been updated
+				if (eventType == Edk.EE_Event_t.EE_UserAdded.ToInt())
+					if (userID != null) {
+						System.out.println("User added");
+						Edk.INSTANCE.EE_DataAcquisitionEnable(
+								userID.getValue(), true);
+						readytocollect = true;
+					}
+			} else if (state != EdkErrorCode.EDK_NO_EVENT.ToInt()) {
+				System.out.println("Internal error in Emotiv Engine!");
+			}
+
+			if (readytocollect) {
+				Edk.INSTANCE.EE_DataUpdateHandle(0, hData);
+
+				Edk.INSTANCE.EE_DataGetNumberOfSample(hData, nSamplesTaken);
+
+				if (nSamplesTaken != null) {
+					if (nSamplesTaken.getValue() != 0) {
+
+						System.out.print("Updated: ");
+						System.out.println(nSamplesTaken.getValue());
+
+						double[] data = new double[nSamplesTaken.getValue()];
+						System.out.println("Samples Taken: " + nSamplesTaken);
+						for (int sampleIdx = 0; sampleIdx < nSamplesTaken
+								.getValue(); ++sampleIdx) {
+							for (int i = 0; i < 17; i++) {
+
+								Edk.INSTANCE.EE_DataGet(hData, i, data,
+										nSamplesTaken.getValue());
+								System.out.print(data[sampleIdx]);
+								System.out.print(",");
+							}
+							
+							
+							//TODO: Set up testing function LearningCore.testNeuralNetwork(data);
+							System.out.println();
+						}
+					}
+				}
+			}
+		}
+		}
+	}
+	public static void stopRecognition(){ recognizing = false; }
+	
+	
+	
+	//Start the sdk
+	public static void startEdk(){
+		Pointer eEvent = Edk.INSTANCE.EE_EmoEngineEventCreate();
+		Pointer eState = Edk.INSTANCE.EE_EmoStateCreate();
+		IntByReference userID = null;
+		IntByReference nSamplesTaken = null;
+		userID = new IntByReference(0);
+		nSamplesTaken = new IntByReference(0);
+		short composerPort = 1726;
+		int option = 1;
+		int state = 0;
+		float secs = 1;
+		boolean readytocollect = false;
+		
+		//Confirm connection to device
+		switch (option) {
+		case 1: {
+			if (Edk.INSTANCE.EE_EngineConnect("Emotiv Systems-5") != EdkErrorCode.EDK_OK
+					.ToInt()) {
+				System.out.println("Emotiv Engine start up failed.");
+				return;
+			}
+			break;
+		}
+		case 2: {
+			System.out.println("Target IP of EmoComposer: [127.0.0.1] ");
+
+			if (Edk.INSTANCE.EE_EngineRemoteConnect("127.0.0.1", composerPort,
+					"Emotiv Systems-5") != EdkErrorCode.EDK_OK.ToInt()) {
+				System.out
+						.println("Cannot connect to EmoComposer on [127.0.0.1]");
+				return;
+			}
+			System.out.println("Connected to EmoComposer on [127.0.0.1]");
+			break;
+		}
+		default:
+			System.out.println("Invalid option...");
+			return;
+		}
 	}
 }

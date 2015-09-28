@@ -11,7 +11,6 @@ public class LearningCore {
 	public static Hashtable<Double,String> nameMap = new Hashtable<>();
 	
 	public static void createMLPerceptron(){
-		//TODO: U
 		DataSet trainingSet = new DataSet(17,1);
 		nameMap.clear();
 		double i=0;
