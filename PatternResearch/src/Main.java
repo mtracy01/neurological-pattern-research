@@ -13,6 +13,7 @@ public class Main extends JPanel{
 	
 	public static ArrayList<String> rawName = new ArrayList<>();
 	public static Hashtable<String,RawData> rawPatterns = new Hashtable<>();
+	public static ArrayList<String> rawDataNames = new ArrayList<String>();
 	
 	public static void main(String[] args){
 		GUI gui = new GUI();
@@ -146,6 +147,7 @@ public class Main extends JPanel{
 			}, (long)0, (long)recordingDuration*1000);
 			rawData.addRecordedPattern((ArrayList<double[]>)data2.clone());
 			rawName.add(dataName);
+			rawDataNames.add(dataName);
 			data2.clear();
 		}
 		rawPatterns.put(dataName,rawData);
