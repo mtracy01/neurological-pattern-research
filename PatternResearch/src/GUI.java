@@ -129,7 +129,7 @@ public class GUI extends JPanel implements ActionListener{
 						};	
 						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
 						recordEvent();
-						recordProcess(30.0);
+						//recordProcess(30.0);
 					}
                 	
                 });
@@ -218,5 +218,6 @@ public class GUI extends JPanel implements ActionListener{
         f1.setVisible(true);
 		
 	}
+	
 	
 }
