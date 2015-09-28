@@ -167,6 +167,7 @@ public class Main extends JPanel{
 	//TODO: Implement Recognition task here
 	//Note: THIS MUST BE CALLED ASYNCHRONOUSLY OR IT WILL MESS THINGS UP!!!!!
 	public static void startRecognition(){
+		startEdk();
 		recognizing=true;
 		while(recognizing){
 			Pointer hData = Edk.INSTANCE.EE_DataCreate();
@@ -179,12 +180,12 @@ public class Main extends JPanel{
 			int state = 0;
 			float secs = 1;
 			boolean readytocollect = false;
-			state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent);
+			state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent2);
 
 			// New event needs to be handled
 			if (state == EdkErrorCode.EDK_OK.ToInt()) {
-				int eventType = Edk.INSTANCE.EE_EmoEngineEventGetType(eEvent);
-				Edk.INSTANCE.EE_EmoEngineEventGetUserId(eEvent, userID);
+				int eventType = Edk.INSTANCE.EE_EmoEngineEventGetType(eEvent2);
+				Edk.INSTANCE.EE_EmoEngineEventGetUserId(eEvent2, userID);
 
 				// Log the EmoState if it has been updated
 				if (eventType == Edk.EE_Event_t.EE_UserAdded.ToInt())
@@ -229,15 +230,15 @@ public class Main extends JPanel{
 				}
 			}
 		}
-		}
 	}
 	public static void stopRecognition(){ recognizing = false; }
 	
 	
+	public static Pointer eEvent2;
 	
 	//Start the sdk
 	public static void startEdk(){
-		Pointer eEvent = Edk.INSTANCE.EE_EmoEngineEventCreate();
+		eEvent2 = Edk.INSTANCE.EE_EmoEngineEventCreate();
 		Pointer eState = Edk.INSTANCE.EE_EmoStateCreate();
 		IntByReference userID = null;
 		IntByReference nSamplesTaken = null;
