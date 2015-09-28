@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import javax.swing.*;
 
 import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 
 import java.util.*;
 import java.util.Timer;
@@ -224,6 +225,11 @@ public class Main extends JPanel{
 							
 							
 							//TODO: Set up testing function LearningCore.testNeuralNetwork(data);
+							DataSet dataSet = new DataSet(17,1);
+							for(int i=0; i<17;i++){
+								dataSet.addRow(new DataSetRow(data[i]));
+							}
+							LearningCore.testNeuralNetwork(dataSet);
 							System.out.println();
 						}
 					}
