@@ -11,9 +11,9 @@ import java.util.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 public class GUI extends JPanel implements ActionListener{
-	static String modeName;
-	static int numbernum;
-	static double durationnum;
+	static String modelName;
+	static int numRecordings;
+	static double recordingDuration;
 	static String getName;
 	public GUI(){
 		JFrame f = new JFrame("Display Window");
@@ -139,14 +139,20 @@ public class GUI extends JPanel implements ActionListener{
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						modeName = input.getText();
+						modelName = input.getText();
 						try{
-							durationnum = Double.parseDouble(duration.getText());
-							numbernum = Integer.parseInt(number.getText());
+							recordingDuration = Double.parseDouble(duration.getText());
+							numRecordings = Integer.parseInt(number.getText());
+							
+							//TODO: Connect the UI and the backend....
+							
+							Main.logData(modelName, numRecordings, recordingDuration);
+							//TODO: Ji, Connect the rest of the UI to the backend...
+							
 						}catch(Exception e1){
 							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
 						};	
-						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
+						System.out.println("name is "+modelName+" duration is"+recordingDuration+"and number of recordings is "+ numRecordings );
 						recordEvent();
 						//recordProcess(30.0);
 					}
@@ -208,13 +214,13 @@ public class GUI extends JPanel implements ActionListener{
 		JPanel panel= new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
-        JLabel mname = new JLabel("Mode Name: "+modeName);
+        JLabel mname = new JLabel("Mode Name: "+modelName);
         mname.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-        JLabel mdu = new JLabel("Duration time:  "+durationnum);
+        JLabel mdu = new JLabel("Duration time:  "+recordingDuration);
         mdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
         JLabel rdu = new JLabel("Remaining Time: ");
         rdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-        JLabel mnum = new JLabel("Number :" +numbernum); 
+        JLabel mnum = new JLabel("Number :" +numRecordings); 
         mnum.setFont(new Font("TimesRoman", Font.ITALIC, 30));
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
