@@ -246,13 +246,13 @@ public class GUI extends JPanel implements ActionListener{
 	public static void loadFiles(){
 		JFrame loadFrame = new JFrame();
 		loadFrame.setSize(new Dimension(500,600));
-		/*String[] allName = new String[Main.rawName.size()];
+		String[] allName = new String[Main.rawName.size()];
 		Iterator i = Main.rawName.iterator();
 		int count = 0;
 		while(i.hasNext()){
 			allName[count++] = (i.next()).toString();
-		}*/
-		String[] allName = {"one","two","three","four","five"};
+		}
+		//String[] allName = {"one","two","three","four","five"};
 		JList list = new JList(allName);
 		ListSelectionModel lsm = list.getSelectionModel();
 		lsm.addListSelectionListener(new ListSelectionListener() {
