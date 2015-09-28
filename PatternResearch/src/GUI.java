@@ -43,23 +43,39 @@ public class GUI extends JPanel implements ActionListener{
             }
         });
 	  
-		JButton beginRecording = new JButton("Learn From Data");
-		beginRecording.setVerticalTextPosition(AbstractButton.CENTER);
-		beginRecording.setPreferredSize(new Dimension(40,40)); 
-		beginRecording.setMnemonic(KeyEvent.VK_D);
-	    
+		JButton learnData = new JButton("Learn From Data");
+		learnData.setVerticalTextPosition(AbstractButton.CENTER);
+		learnData.setPreferredSize(new Dimension(40,40)); 
+		learnData.setMnemonic(KeyEvent.VK_D);
+	    learnData.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				loadFiles();
+				
+			}
+	    	
+	    });
 		JButton dataEvent = new JButton("Recognizing");
 		dataEvent.setPreferredSize(new Dimension(40,40));
 		dataEvent.setHorizontalTextPosition(AbstractButton.CENTER);
 		dataEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
-		
+		dataEvent.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				recognizeData();
+				
+			}
+			
+		});
 		JButton exitEvent = new JButton("Exit");
 		
 		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
 		exitEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
 			
 		buttonup.add(reportEvent);
-		buttonup.add(beginRecording);
+		buttonup.add(learnData);
 		
 		buttonup.add(dataEvent);
 		buttonlow.add(exitEvent);
@@ -129,7 +145,7 @@ public class GUI extends JPanel implements ActionListener{
 						};	
 						System.out.println("name is "+modeName+" duration is"+durationnum+"and number is "+ numbernum );
 						recordEvent();
-						recordProcess(30.0);
+						//recordProcess(30.0);
 					}
                 	
                 });
@@ -218,5 +234,13 @@ public class GUI extends JPanel implements ActionListener{
         f1.setVisible(true);
 		
 	}
+	public static void loadFiles(){
+		return;
+	}
+	
+	public static void recognizeData(){
+		return;
+	}
+	
 	
 }
