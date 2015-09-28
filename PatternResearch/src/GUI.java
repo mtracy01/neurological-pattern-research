@@ -8,10 +8,13 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.Timer;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 public class GUI extends JPanel implements ActionListener{
 	static String modeName;
 	static int numbernum;
 	static double durationnum;
+	static String getName;
 	public GUI(){
 		JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -235,7 +238,40 @@ public class GUI extends JPanel implements ActionListener{
 		
 	}
 	public static void loadFiles(){
-		return;
+		JFrame loadFrame = new JFrame();
+		loadFrame.setSize(new Dimension(500,600));
+		/*String[] allName = new String[Main.rawName.size()];
+		Iterator i = Main.rawName.iterator();
+		int count = 0;
+		while(i.hasNext()){
+			allName[count++] = (i.next()).toString();
+		}*/
+		String[] allName = {"one","two","three","four","five"};
+		JList list = new JList(allName);
+		ListSelectionModel lsm = list.getSelectionModel();
+		lsm.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent listSelectionEvent) {
+				if( !listSelectionEvent.getValueIsAdjusting() && !lsm.isSelectionEmpty()){
+					JOptionPane.showMessageDialog(null, "Selection Confirmed","Confirm",JOptionPane.INFORMATION_MESSAGE);
+					getName = allName[lsm.getLeadSelectionIndex()];	
+				}
+			}
+		});
+		JScrollPane listPane = new JScrollPane(list);
+		listPane.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+		JPanel jp = new JPanel();
+		jp.setPreferredSize(new Dimension(480,500));
+		jp.add(new JLabel("Select Raw Data"));
+		jp.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+        JPanel listContainer = new JPanel(new GridLayout(1,1));
+        listContainer.setPreferredSize(new Dimension(480,500));
+        listContainer.setBorder(BorderFactory.createTitledBorder("List"));
+        listContainer.setFont(new Font("TimesRoman", Font.CENTER_BASELINE, 20));
+        listContainer.add(listPane);
+		jp.add(listContainer);
+		loadFrame.add(jp);
+		loadFrame.setVisible(true);
 	}
 	
 	public static void recognizeData(){
