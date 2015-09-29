@@ -10,11 +10,12 @@ import java.util.Timer;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-public class GUI extends JPanel implements ActionListener{
+public class GUI extends JPanel implements ActionListener, Runnable{
 	static String modelName;
 	static int numRecordings;
 	static double recordingDuration;
 	static String getName;
+	static int clickTime;
 	public GUI(){
 		JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -131,33 +132,37 @@ public class GUI extends JPanel implements ActionListener{
                 JLabel name = new JLabel("name");
                 JLabel lduration = new JLabel("duration");
                 JLabel lnumber = new JLabel("counts");
-                
+                clickTime =1;
                 JPanel inputpanel = new JPanel();
                 inputpanel.setLayout(new BoxLayout(inputpanel,BoxLayout.Y_AXIS));
                 JTextField input = new JTextField(15);
                 JButton button = new JButton(new AbstractAction("Start Recording"){
-
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						modelName = input.getText();
 						try{
 							recordingDuration = Double.parseDouble(duration.getText());
-							numRecordings = Integer.parseInt(number.getText());
-							
-							//TODO: Connect the UI and the backend....
-							
-							Main.logData(modelName, numRecordings, recordingDuration);
-							//TODO: Ji, Connect the rest of the UI to the backend...
+							if(clickTime == 1){
+								numRecordings = Integer.parseInt(number.getText());
+								clickTime = 0;
+							}
+							else numRecordings = numRecordings-1;
 							
 						}catch(Exception e1){
 							JOptionPane.showMessageDialog(null, "Not an integer, please re-enter it :p","Error",JOptionPane.ERROR_MESSAGE);
 						};	
-						System.out.println("name is "+modelName+" duration is"+recordingDuration+"and number of recordings is "+ numRecordings );
-						recordEvent();
-						//recordProcess(30.0);
+						if(numRecordings > 0){
+							System.out.println("name is "+modelName+" duration is"+recordingDuration+"and number of recordings is "+ numRecordings );
+							//Main.logData(modelName, numRecordings, recordingDuration);
+							
+							RunnableGUI newgui = new RunnableGUI();
+							Thread t = new Thread(newgui);
+							t.start();
+						}
 					}
                 	
                 });
+                button.setText("Continue");
                 inputpanel.add(title1);
                 inputpanel.add(name);
                 inputpanel.add(input);
@@ -181,33 +186,9 @@ public class GUI extends JPanel implements ActionListener{
         });
     }
 	
-	
-	public static void recordEvent(){
-		JFrame f1 = new JFrame("Recording");
-		f1.setSize(300,300);
-		JPanel panel= new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setOpaque(true);
-        JLabel title = new JLabel("                Recording ..");
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int i = Integer.parseInt("6");
-            public void run() {
-                System.out.println(i--);
-                title.setText("Remaining time: " + Integer.toString(i));
-                title.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-                if (i< 1){
-                    timer.cancel();
-                	f1.setVisible(false);
-                }
-            }
-        }, 0, 1000);
-        panel.add(title);
-        f1.add(panel);
-        f1.setVisible(true);
-		
-	}
+
 	public static void recordProcess(final double durationTime){
+		System.out.println("hello");
 		JFrame f1 = new JFrame("Recording");
 		f1.setSize(400,300);
 		f1.setBackground(Color.WHITE);
@@ -228,7 +209,7 @@ public class GUI extends JPanel implements ActionListener{
             public void run() {
                 System.out.println(t);
                 mdu.setText("Remaining time: " + Double.toString(t));
-               // title.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+              
                 if ((t--)< 1.0){
                     timer.cancel();
                 	f1.setVisible(false);
@@ -246,13 +227,13 @@ public class GUI extends JPanel implements ActionListener{
 	public static void loadFiles(){
 		JFrame loadFrame = new JFrame();
 		loadFrame.setSize(new Dimension(500,600));
-		String[] allName = new String[Main.rawName.size()];
+		/*String[] allName = new String[Main.rawName.size()];
 		Iterator i = Main.rawName.iterator();
 		int count = 0;
 		while(i.hasNext()){
 			allName[count++] = (i.next()).toString();
-		}
-		//String[] allName = {"one","two","three","four","five"};
+		}*/
+		String[] allName = {"one","two","three","four","five"};
 		JList list = new JList(allName);
 		ListSelectionModel lsm = list.getSelectionModel();
 		lsm.addListSelectionListener(new ListSelectionListener() {
@@ -282,6 +263,13 @@ public class GUI extends JPanel implements ActionListener{
 	
 	public static void recognizeData(){
 		return;
+	}
+
+	@Override
+	public void run() {
+		recordProcess(recordingDuration);
+		
+		
 	}
 	
 	
