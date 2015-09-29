@@ -10,12 +10,13 @@ import java.util.Timer;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-public class GUI extends JPanel implements ActionListener, Runnable{
+public class GUI extends JPanel implements ActionListener{
 	static String modelName;
 	static int numRecordings;
 	static double recordingDuration;
 	static String getName;
 	static int clickTime;
+	static boolean reg = true;
 	public GUI(){
 		JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -186,44 +187,6 @@ public class GUI extends JPanel implements ActionListener, Runnable{
         });
     }
 	
-
-	public static void recordProcess(final double durationTime){
-		System.out.println("hello");
-		JFrame f1 = new JFrame("Recording");
-		f1.setSize(400,300);
-		f1.setBackground(Color.WHITE);
-		JPanel panel= new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
-        JLabel mname = new JLabel("Mode Name: "+modelName);
-        mname.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-        JLabel mdu = new JLabel("Duration time:  "+recordingDuration);
-        mdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-        JLabel rdu = new JLabel("Remaining Time: ");
-        rdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-        JLabel mnum = new JLabel("Number :" +numRecordings); 
-        mnum.setFont(new Font("TimesRoman", Font.ITALIC, 30));
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-        	double t = durationTime;
-            public void run() {
-                System.out.println(t);
-                mdu.setText("Remaining time: " + Double.toString(t));
-              
-                if ((t--)< 1.0){
-                    timer.cancel();
-                	f1.setVisible(false);
-                }
-            }
-        }, 0, 1000);
-        panel.add(mname);
-        panel.add(mdu);
-        panel.add(rdu);
-        panel.add(mnum);
-        f1.add(panel);
-        f1.setVisible(true);
-		
-	}
 	public static void loadFiles(){
 		JFrame loadFrame = new JFrame();
 		loadFrame.setSize(new Dimension(500,600));
@@ -262,14 +225,9 @@ public class GUI extends JPanel implements ActionListener, Runnable{
 	}
 	
 	public static void recognizeData(){
-		return;
-	}
-
-	@Override
-	public void run() {
-		recordProcess(recordingDuration);
-		
-		
+		if(reg) Main.startRecognition();
+		else Main.stopRecognition();
+		reg = false;
 	}
 	
 	
