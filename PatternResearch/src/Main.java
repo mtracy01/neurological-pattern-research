@@ -3,7 +3,6 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Hashtable;
 
 import javax.swing.*;
 
@@ -21,12 +20,12 @@ public class Main extends JPanel{
 	
 	public static void main(String[] args){
 		GUI gui = new GUI();
+		gui.startWindow();
 	}
 	
 	//Record a certain number of raw inputs and store them into some sort of database
 	public static void logData(String dataName, int numRecordings, double recordingDuration){
 		
-
 		short composerPort = 1726;
 		int option = 1;
 		
@@ -58,7 +57,6 @@ public class Main extends JPanel{
 		
 		//Begin creating and processing data
 		
-
 		System.out.println("Start receiving EEG Data!");
 		//TODO: Add 5 second delay before collection start and at UI elements to compliment this
 		/*Timer t = new Timer();
@@ -68,8 +66,15 @@ public class Main extends JPanel{
 			}
 			
 		}, 1,5000);*/
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(int j=0;j< numRecordings;j++){
 			System.out.println("Run " + j);
+			
 			if (Edk.INSTANCE.EE_EngineConnect("Emotiv Systems-5") != EdkErrorCode.EDK_OK
 					.ToInt()) {
 				System.out.println("Emotiv Engine start up failed.");
@@ -154,6 +159,7 @@ public class Main extends JPanel{
 			rawData.addRecordedPattern((ArrayList<double[]>)data2.clone());
 			rawName.add(dataName);
 			rawDataNames.add(dataName);
+			JOptionPane.showMessageDialog(null, "Done!","Finish Recording",JOptionPane.PLAIN_MESSAGE);
 			data2.clear();
 			Edk.INSTANCE.EE_EngineDisconnect();
 			Edk.INSTANCE.EE_EmoStateFree(eState);

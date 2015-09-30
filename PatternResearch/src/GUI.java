@@ -17,7 +17,7 @@ public class GUI extends JPanel implements ActionListener{
 	static String getName;
 	static int clickTime;
 	static boolean reg = true;
-	public GUI(){
+	public void startWindow(){
 		JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(400,500);
@@ -95,11 +95,6 @@ public class GUI extends JPanel implements ActionListener{
 		
 	}
 
-	public static void main(String args[]){
-		 GUI g = new GUI();
-
-	}
-
 	
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -154,11 +149,8 @@ public class GUI extends JPanel implements ActionListener{
 						};	
 						if(numRecordings > 0){
 							System.out.println("name is "+modelName+" duration is"+recordingDuration+"and number of recordings is "+ numRecordings );
-							//Main.logData(modelName, numRecordings, recordingDuration);
-							
-							RunnableGUI newgui = new RunnableGUI();
-							Thread t = new Thread(newgui);
-							t.start();
+							frame.setVisible(false);
+							Main.logData(modelName, numRecordings, recordingDuration);
 						}
 					}
                 	
@@ -190,13 +182,13 @@ public class GUI extends JPanel implements ActionListener{
 	public static void loadFiles(){
 		JFrame loadFrame = new JFrame();
 		loadFrame.setSize(new Dimension(500,600));
-		/*String[] allName = new String[Main.rawName.size()];
+		String[] allName = new String[Main.rawName.size()];
 		Iterator i = Main.rawName.iterator();
 		int count = 0;
 		while(i.hasNext()){
 			allName[count++] = (i.next()).toString();
-		}*/
-		String[] allName = {"one","two","three","four","five"};
+		}
+		//String[] allName = {"one","two","three","four","five"};
 		JList list = new JList(allName);
 		ListSelectionModel lsm = list.getSelectionModel();
 		lsm.addListSelectionListener(new ListSelectionListener() {
@@ -227,8 +219,50 @@ public class GUI extends JPanel implements ActionListener{
 	public static void recognizeData(){
 		if(reg) Main.startRecognition();
 		else Main.stopRecognition();
-		reg = false;
+		reg = !reg;
 	}
-	
+	public static void recordProcess(double durationTime){
+		System.out.println("hello");
+		JFrame f1 = new JFrame("Recording");
+		f1.setSize(400,300);
+		JPanel panel= new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        JLabel mname = new JLabel("Mode Name: "+GUI.modelName);
+        mname.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        JLabel pdu = new JLabel("Preparing Time: ");
+        pdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        JLabel rdu = new JLabel("Remaining Time: ");
+        rdu.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        JLabel mnum = new JLabel("Number :" +GUI.numRecordings); 
+        mnum.setFont(new Font("TimesRoman", Font.ITALIC, 30));
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+        	double t = durationTime+5;
+        	double ptime = 5;
+            public void run() {
+                System.out.println(t+""+ptime);
+                if(ptime > 0){
+                	ptime--;
+                	pdu.setText("Preparing time: " + Double.toString(ptime));
+                }
+                if(ptime == 0.0){	
+                	rdu.setText("Remaining time: " + Double.toString(t));
+                }
+                if ((t--)< 1.0){
+                    timer.cancel();
+                    
+                	f1.setVisible(false);
+                }
+            }
+        }, 0, 1000);
+        panel.add(mname);
+        panel.add(pdu);
+        panel.add(rdu);
+        panel.add(mnum);
+        f1.add(panel);
+        f1.setVisible(true);
+	}
+
 	
 }
