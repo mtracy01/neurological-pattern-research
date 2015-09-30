@@ -15,13 +15,13 @@ public class LearningCore {
 		nameMap.clear();
 		double i=0;
 		int size = 0;
-		for(RawData r: rawData){
+		for(RawData r: rawData){										  //For each RawData that we are training
 			nameMap.put(i,r.getName());
-			for(double j=0;j<r.getCount();j++){
+			for(double j=0;j<r.getCount();j++){							//For each raw pattern in that data
 				ArrayList<double[]> dataPoints = r.getRawPattern((int)j);
 				
-				for(double[] arr: dataPoints){
-					trainingSet.addRow(arr,new double[]{j});
+				for(double[] arr: dataPoints){						 //For each data point in a raw data
+					trainingSet.addRow(arr,new double[]{i});		//arr is the row input, j is what would be the predicted result
 					size++;
 				}
 			}
@@ -33,19 +33,27 @@ public class LearningCore {
 	}
 	
 	public static void testNeuralNetwork(DataSet testSet) {
-
+		double average = 0;
+		double i=0;
 		for(DataSetRow dataRow : testSet.getRows()) {
-		mlPerceptron.setInput(dataRow.getInput());
-		mlPerceptron.calculate();
-		double[ ] networkOutput = mlPerceptron.getOutput();
-		System.out.print("Input: " + Arrays.toString(dataRow.getInput()) );
-		System.out.println(" Output: " + Arrays.toString(networkOutput) );
+			mlPerceptron.setInput(dataRow.getInput());
+			mlPerceptron.calculate();
+			double[ ] networkOutput = mlPerceptron.getOutput();
+			//System.out.print("Input: " + Arrays.toString(dataRow.getInput()) );
+			//System.out.println(" Output: " + Arrays.toString(networkOutput) );
+			average+=networkOutput[0];
+			i++;
+			//TODO: Average the outputs and round maybe?
 		}
+		int result = Integer.parseInt(Double.toString(average/i));
+		String prediction = nameMap.get(i);
+		System.out.println("Prediction is: " + prediction);
 
 	}
 
 	public static void saveModel(String filename){
 		//TODO: Implement serialization for saving models
+		
 	}
 	
 	public static void loadModel(String filename){

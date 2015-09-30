@@ -31,29 +31,6 @@ public class Main extends JPanel{
 		
 		RawData rawData = new RawData(dataName, numRecordings, recordingDuration);
 		
-		//Confirm connection to device
-		switch (option) {
-		case 1: {
-			
-			break;
-		}
-		case 2: {
-			System.out.println("Target IP of EmoComposer: [127.0.0.1] ");
-
-			if (Edk.INSTANCE.EE_EngineRemoteConnect("127.0.0.1", composerPort,
-					"Emotiv Systems-5") != EdkErrorCode.EDK_OK.ToInt()) {
-				System.out
-						.println("Cannot connect to EmoComposer on [127.0.0.1]");
-				return;
-			}
-			System.out.println("Connected to EmoComposer on [127.0.0.1]");
-			break;
-		}
-		default:
-			System.out.println("Invalid option...");
-			return;
-		}
-
 		
 		//Begin creating and processing data
 		
@@ -66,15 +43,16 @@ public class Main extends JPanel{
 			}
 			
 		}, 1,5000);*/
-		try {
+		/*try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		for(int j=0;j< numRecordings;j++){
 			System.out.println("Run " + j);
-			
+			Pointer eEvent = Edk.INSTANCE.EE_EmoEngineEventCreate();
+			Pointer eState = Edk.INSTANCE.EE_EmoStateCreate();
 			if (Edk.INSTANCE.EE_EngineConnect("Emotiv Systems-5") != EdkErrorCode.EDK_OK
 					.ToInt()) {
 				System.out.println("Emotiv Engine start up failed.");
@@ -83,8 +61,7 @@ public class Main extends JPanel{
 			ArrayList<double[]> data2 = new ArrayList<>();
 			//Timer timer = new Timer();
 			
-			Pointer eEvent = Edk.INSTANCE.EE_EmoEngineEventCreate();
-			Pointer eState = Edk.INSTANCE.EE_EmoStateCreate();
+		
 		
 			IntByReference userID = new IntByReference(0);
 			IntByReference nSamplesTaken = new IntByReference(0);
@@ -222,6 +199,7 @@ public class Main extends JPanel{
 
 						double[] data = new double[nSamplesTaken.getValue()];
 						System.out.println("Samples Taken: " + nSamplesTaken);
+						DataSet dataSet = new DataSet(17,1);
 						for (int sampleIdx = 0; sampleIdx < nSamplesTaken
 								.getValue(); ++sampleIdx) {
 							for (int i = 0; i < 17; i++) {
@@ -232,16 +210,17 @@ public class Main extends JPanel{
 								System.out.print(",");
 							}
 							
-							
-							//TODO: Set up testing function LearningCore.testNeuralNetwork(data);
+							dataSet.addRow(data);
+							/*//TODO: Set up testing function LearningCore.testNeuralNetwork(data);
 							DataSet dataSet = new DataSet(17,1);
 							for(int i=0; i<17;i++){
 								dataSet.addRow(new DataSetRow(data[i]));
 							}
 							LearningCore.testNeuralNetwork(dataSet);
-							System.out.println();
+							System.out.println();*/
 							//TODO: Keep track of the results of testNeuralNetowork
 						}
+						LearningCore.testNeuralNetwork(dataSet);
 					}
 				}
 			}
