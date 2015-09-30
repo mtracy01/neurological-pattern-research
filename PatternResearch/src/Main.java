@@ -159,7 +159,7 @@ public class Main extends JPanel{
 			rawData.addRecordedPattern((ArrayList<double[]>)data2.clone());
 			rawName.add(dataName);
 			rawDataNames.add(dataName);
-			JOptionPane.showMessageDialog(null, "Done!","Finish Recording",JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Remaining Tasks: "+(numRecordings+1-j),"Finish Recording",JOptionPane.PLAIN_MESSAGE);
 			data2.clear();
 			Edk.INSTANCE.EE_EngineDisconnect();
 			Edk.INSTANCE.EE_EmoStateFree(eState);
