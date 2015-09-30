@@ -217,7 +217,15 @@ public class GUI extends JPanel implements ActionListener{
 	}
 	
 	public static void recognizeData(){
-		if(reg) Main.startRecognition();
+		if(reg){
+		Thread t1 = new Thread(new Runnable() {
+		     public void run() {
+		          Main.startRecognition();
+		     }
+		});  
+		t1.start();
+		}
+		
 		else Main.stopRecognition();
 		reg = !reg;
 	}
