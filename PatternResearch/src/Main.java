@@ -156,17 +156,18 @@ public class Main extends JPanel{
 	public static void startRecognition(){
 		startEdk();
 		recognizing=true;
+		Pointer hData = Edk.INSTANCE.EE_DataCreate();
+		Edk.INSTANCE.EE_DataSetBufferSizeInSec(1);
+		IntByReference userID = null;
+		IntByReference nSamplesTaken = null;
+		userID = new IntByReference(0);
+		nSamplesTaken = new IntByReference(0);
+		int option = 1;
+		int state = 0;
+		float secs = 1;
+		boolean readytocollect = false;
 		while(recognizing){
-			Pointer hData = Edk.INSTANCE.EE_DataCreate();
-			Edk.INSTANCE.EE_DataSetBufferSizeInSec(1);
-			IntByReference userID = null;
-			IntByReference nSamplesTaken = null;
-			userID = new IntByReference(0);
-			nSamplesTaken = new IntByReference(0);
-			int option = 1;
-			int state = 0;
-			float secs = 1;
-			boolean readytocollect = false;
+			
 			state = Edk.INSTANCE.EE_EngineGetNextEvent(eEvent2);
 
 			// New event needs to be handled
@@ -202,15 +203,17 @@ public class Main extends JPanel{
 						DataSet dataSet = new DataSet(17,1);
 						for (int sampleIdx = 0; sampleIdx < nSamplesTaken
 								.getValue(); ++sampleIdx) {
+							double[] data2= new double[17];
 							for (int i = 0; i < 17; i++) {
 
 								Edk.INSTANCE.EE_DataGet(hData, i, data,
 										nSamplesTaken.getValue());
 								System.out.print(data[sampleIdx]);
+								data[i]=data[sampleIdx];
 								System.out.print(",");
 							}
 							
-							dataSet.addRow(data);
+							dataSet.addRow(data2);
 							/*//TODO: Set up testing function LearningCore.testNeuralNetwork(data);
 							DataSet dataSet = new DataSet(17,1);
 							for(int i=0; i<17;i++){
