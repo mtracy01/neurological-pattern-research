@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/LearningCore.java</name>
+			<type>1</type>
+			<location>C:/Users/matthew/Projects/neurological-pattern-research/PatternResearch/src/LearningCore.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>
