@@ -168,8 +168,6 @@ public class GUI extends JPanel implements ActionListener{
 
 		f.getContentPane().add(whole);
 		f.setVisible(true);
-		
-		
 	}
 
 	
