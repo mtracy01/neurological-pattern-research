@@ -2,9 +2,8 @@
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
-
 import java.awt.event.*;
+import java.io.File;
 import java.util.*;
 import java.util.Timer;
 
@@ -33,22 +32,21 @@ public class GUI extends JPanel implements ActionListener{
 		BoxLayout boxLayout = new BoxLayout(buttonlow, BoxLayout.LINE_AXIS);
 		buttonlow.setLayout(boxLayout);
 		
-		JButton reportEvent = new JButton("Record Event");
+		JButton reportEvent = new JButton("Record Native Event");
 	    reportEvent.setVerticalTextPosition(AbstractButton.CENTER);
 	   
 	    reportEvent.setPreferredSize(new Dimension(40,40));
 	    reportEvent.setMnemonic(KeyEvent.VK_D);
-	    reportEvent.addActionListener(new ActionListener()
-        {
+	    reportEvent.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-            	createFrame();
-                
+            public void actionPerformed(ActionEvent ae){
+            	createRecordNativeFrame();
             }
         });
 	  
-		JButton learnData = new JButton("Learn From Data");
+	    
+	    //Learn from Native Data button
+		JButton learnData = new JButton("Learn From Native Data");
 		learnData.setVerticalTextPosition(AbstractButton.CENTER);
 		learnData.setPreferredSize(new Dimension(40,40)); 
 		learnData.setMnemonic(KeyEvent.VK_D);
@@ -57,11 +55,13 @@ public class GUI extends JPanel implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadFiles();
-				
 			}
 	    	
 	    });
-		JButton dataEvent = new JButton("Recognizing");
+	    
+	    
+	    //Recognize Live Events button
+		JButton dataEvent = new JButton("Recognizing Live Events (Out of Order)");
 		dataEvent.setPreferredSize(new Dimension(40,40));
 		dataEvent.setHorizontalTextPosition(AbstractButton.CENTER);
 		dataEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
@@ -70,20 +70,29 @@ public class GUI extends JPanel implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				recognizeData();
-				
 			}
-			
 		});
-		JButton selectFileButton = new JButton("Train with File");
+		
+		
+		//Preprocess Raw CSV button
+		final JFileChooser fc = new JFileChooser();
+		JButton selectFileButton = new JButton("Preprocess Raw CSV");
 		selectFileButton.setPreferredSize(new Dimension(40,40));
 		selectFileButton.addActionListener(new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Create GUI for specifying file
+				int ret = fc.showOpenDialog(GUI.this);
+				if(ret==JFileChooser.APPROVE_OPTION){
+					File file = fc.getSelectedFile();
+					LearningCore.loadRawModel(file.getAbsolutePath());
+				}
 			}
 		});
 		
+		
+		//Predict with filebutton 
+		//TODO: Ask user to select a preprocessed file to perform a prediction on
 		JButton selectPredictButton = new JButton("Predict with File");
 		selectPredictButton.setPreferredSize(new Dimension(40,40));
 		selectPredictButton.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -92,11 +101,27 @@ public class GUI extends JPanel implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				recognizeData();
-				
+					
 			}
 			
 		});
+		
+		//TODO: Create a new frame to encapsulate some of the new functionality
+		//Load Preprocessed Data.
+		//TODO: Create button and functionality to load all preprocessed data in a file using deserialzation
+		
+		//Save Preprocessed Data.
+		//TODO: Create button and functionality to save all of the preprocessed data into a file using serialization
+		
+		
+		//Clear Preprocessed Data.
+		
+		
+		//Save a Particular Preprocessed Data
+		
+		
+		//Drop a Particular Preprocessed Data
+		//TODO: Create button and methods for dropping a particular point from the data set
 		
 		
 		JButton exitEvent = new JButton("Exit");
@@ -127,18 +152,14 @@ public class GUI extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
-	public static void createFrame()
-    {
-        EventQueue.invokeLater(new Runnable()
-        {
+	public static void createRecordNativeFrame(){
+        EventQueue.invokeLater(new Runnable(){
             @Override
-            public void run()
-            {	
+            public void run(){	
 
                 JFrame frame = new JFrame("User Information");
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                try 
-                {
+                try {
                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (Exception e) {
                    e.printStackTrace();
@@ -182,6 +203,10 @@ public class GUI extends JPanel implements ActionListener{
 					}
                 	
                 });
+                
+                
+                
+                //Buttons added to frame here after being declared and having parameters set
                 button.setText("Continue");
                 inputpanel.add(title1);
                 inputpanel.add(name);
