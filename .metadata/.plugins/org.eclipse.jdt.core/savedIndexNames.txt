@@ -7,15 +7,14 @@ INDEX VERSION 1.127+C:\Users\matthew\Projects\neurological-pattern-research\.met
 4133831525.index
 3351547883.index
 4097853004.index
-4282262597.index
-1984797805.index
 3425653186.index
+1984797805.index
+4282262597.index
 2921179834.index
 2410559617.index
 3899833320.index
 30640306.index
 4135478709.index
-3450580505.index
 3150109421.index
 2142348700.index
 3620173291.index

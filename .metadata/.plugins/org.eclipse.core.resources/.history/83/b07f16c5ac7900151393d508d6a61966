@@ -9,6 +9,7 @@ import org.neuroph.core.data.DataSet;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
+import Objects.PreprocessData;
 import Objects.RawNativeData;
 import emotiv.Edk;
 import emotiv.EdkErrorCode;
@@ -18,7 +19,7 @@ public class Main extends JPanel{
 	public static ArrayList<String> rawName = new ArrayList<>();
 	public static Hashtable<String,RawNativeData> rawPatterns = new Hashtable<>();
 	public static ArrayList<String> rawDataNames = new ArrayList<String>();
-	
+	public static ArrayList<PreprocessData> preprocessData = new ArrayList<>();
 	public static void main(String[] args){
 		GUI gui = new GUI();
 		gui.startWindow();
