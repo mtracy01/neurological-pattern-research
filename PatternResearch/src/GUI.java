@@ -22,7 +22,7 @@ public class GUI extends JPanel implements ActionListener{
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(400,500);
 
-		JPanel whole = new JPanel(new GridLayout(3,0));
+		JPanel whole = new JPanel(new GridLayout(5,0));
 		JPanel buttontop = new JPanel();
 		JLabel label = new JLabel("Main Menu");
 		label.setFont(new Font("TimesRoman", Font.ITALIC, 25));
@@ -74,6 +74,11 @@ public class GUI extends JPanel implements ActionListener{
 			}
 			
 		});
+		JButton selectFileButton = new JButton("Train with File");
+		selectFileButton.setPreferredSize(40,40);
+		
+		JButton selectPredictButton = new JButton("Predict with File");
+		
 		JButton exitEvent = new JButton("Exit");
 		
 		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
