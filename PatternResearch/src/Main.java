@@ -1,21 +1,23 @@
-import com.sun.jna.Pointer;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
-import com.sun.jna.ptr.IntByReference;
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.neuroph.core.data.DataSet;
-import org.neuroph.core.data.DataSetRow;
 
-import java.util.*;
-import java.util.Timer;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.IntByReference;
+
+import Objects.PreprocessData;
+import Objects.RawNativeData;
+import emotiv.Edk;
+import emotiv.EdkErrorCode;
 
 public class Main extends JPanel{
 	
 	public static ArrayList<String> rawName = new ArrayList<>();
-	public static Hashtable<String,RawData> rawPatterns = new Hashtable<>();
+	public static Hashtable<String,RawNativeData> rawPatterns = new Hashtable<>();
 	public static ArrayList<String> rawDataNames = new ArrayList<String>();
 	public static ArrayList<PreprocessData> preprocessData = new ArrayList<>();
 	public static void main(String[] args){
@@ -29,7 +31,7 @@ public class Main extends JPanel{
 		short composerPort = 1726;
 		int option = 1;
 		
-		RawData rawData = new RawData(dataName, numRecordings, recordingDuration);
+		RawNativeData rawData = new RawNativeData(dataName, numRecordings, recordingDuration);
 		
 		
 		//Begin creating and processing data

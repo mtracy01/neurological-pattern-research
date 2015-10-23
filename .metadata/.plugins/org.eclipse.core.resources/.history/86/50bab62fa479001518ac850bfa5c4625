@@ -1,0 +1,42 @@
+
+import java.util.*;
+
+public class PreprocessData {
+	private String title;
+	private String record;
+	private int sample;
+	private String subject;
+	private ArrayList<float[]> points = new ArrayList<>();
+	
+	public PreprocessData(String title, String record, int sample, String subject ){
+		this.title = title;
+		this.record = record;
+		this.sample = sample;
+		this.subject = subject;
+	}
+	public ArrayList<float[]> getDataPoints(){
+		return this.points;
+	}
+	public void addDataPoint(float[] point){
+		this.points.add(point);
+	}
+	
+	public float[] getDataPoint(int index){
+		return points.get(index);
+	}
+	
+	public String getTitle(){
+		return this.title;
+	}
+	public String getRecord(){
+		return this.record;
+	}
+	public int getSample(){
+		return this.sample;
+	}
+	public String getSubject(){
+		return this.subject;
+	}
+	
+}
+

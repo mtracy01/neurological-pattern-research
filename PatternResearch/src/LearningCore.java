@@ -1,16 +1,20 @@
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
-import java.util.*;
-import org.neuroph.core.NeuralNetwork;
-import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.util.TransferFunctionType;
+
 
 import com.opencsv.CSVReader;
 
+import Objects.PreprocessData;
+import Objects.RawNativeData;
+
 public class LearningCore {
-	public static ArrayList<RawData> rawData = new ArrayList<>();
+	public static ArrayList<RawNativeData> rawData = new ArrayList<>();
 	public static MultiLayerPerceptron mlPerceptron = null;
 	public static Hashtable<Double,String> nameMap = new Hashtable<>();
 	
@@ -19,7 +23,7 @@ public class LearningCore {
 		nameMap.clear();
 		double i=0;
 		int size = 0;
-		for(RawData r: rawData){										  //For each RawData that we are training
+		for(RawNativeData r: rawData){										  //For each RawData that we are training
 			nameMap.put(i,r.getName());
 			for(double j=0;j<r.getCount();j++){							//For each raw pattern in that data
 				ArrayList<double[]> dataPoints = r.getRawPattern((int)j);

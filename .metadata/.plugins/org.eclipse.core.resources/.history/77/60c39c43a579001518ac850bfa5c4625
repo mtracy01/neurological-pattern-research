@@ -1,0 +1,96 @@
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Hashtable;
+
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
+import org.neuroph.nnet.MultiLayerPerceptron;
+import org.neuroph.util.TransferFunctionType;
+
+
+import com.opencsv.CSVReader;
+
+import Objects.PreprocessData;
+
+public class LearningCore {
+	public static ArrayList<RawNativeData> rawData = new ArrayList<>();
+	public static MultiLayerPerceptron mlPerceptron = null;
+	public static Hashtable<Double,String> nameMap = new Hashtable<>();
+	
+	public static void createMLPerceptron(){
+		DataSet trainingSet = new DataSet(17,1);
+		nameMap.clear();
+		double i=0;
+		int size = 0;
+		for(RawNativeData r: rawData){										  //For each RawData that we are training
+			nameMap.put(i,r.getName());
+			for(double j=0;j<r.getCount();j++){							//For each raw pattern in that data
+				ArrayList<double[]> dataPoints = r.getRawPattern((int)j);
+				
+				for(double[] arr: dataPoints){						 //For each data point in a raw data
+					trainingSet.addRow(arr,new double[]{i});		//arr is the row input, j is what would be the predicted result
+					size++;
+				}
+			}
+			i++;
+		}
+		
+		mlPerceptron = new MultiLayerPerceptron(TransferFunctionType.TANH,17,size,1);
+		mlPerceptron.learn(trainingSet);
+	}
+	
+	public static void testNeuralNetwork(DataSet testSet) {
+		double average = 0;
+		double i=0;
+		for(DataSetRow dataRow : testSet.getRows()) {
+			mlPerceptron.setInput(dataRow.getInput());
+			mlPerceptron.calculate();
+			double[ ] networkOutput = mlPerceptron.getOutput();
+			//System.out.print("Input: " + Arrays.toString(dataRow.getInput()) );
+			//System.out.println(" Output: " + Arrays.toString(networkOutput) );
+			average+=networkOutput[0];
+			i++;
+			//TODO: Average the outputs and round maybe?
+		}
+		int result = Integer.parseInt(Double.toString(average/i));
+		String prediction = nameMap.get(i);
+		System.out.println("Prediction is: " + prediction);
+
+	}
+
+	public static void saveModel(String filename){
+		//TODO: Implement serialization for saving models
+		
+	}
+	
+	public static void loadRawModel(String filename){
+		//TODO: implement serialization for loading models
+		CSVReader reader = null;
+		try{
+			reader = new CSVReader(new FileReader(filename));
+			//In first column, since Emotiv isn't smart, we need to do special parsing of data
+			String[] entries = reader.readNext();
+			String recordingName = entries[0];
+			String recordingDuration = entries[1];
+			int samplingRate = Integer.parseInt(entries[2]);
+			String subject = entries[3];
+			PreprocessData pd = new PreprocessData(recordingName, recordingDuration, samplingRate,subject);
+			Main.preprocessData.add(pd);
+			
+			//Take all of the sampled data and put it in the object
+			while((entries=reader.readNext())!=null){
+				float[] data = new float[14];
+				for(int i=2;i<16;i++)
+					data[i-2]=Float.parseFloat(entries[i]);
+				pd.addDataPoint(data.clone());
+			}
+			
+		
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+}
+
+
