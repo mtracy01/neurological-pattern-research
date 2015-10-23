@@ -1,9 +1,12 @@
+import java.io.FileReader;
 import java.util.*;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.TransferFunctionType;
+
+import com.opencsv.CSVReader;
 
 public class LearningCore {
 	public static ArrayList<RawData> rawData = new ArrayList<>();
@@ -58,6 +61,28 @@ public class LearningCore {
 	
 	public static void loadModel(String filename){
 		//TODO: implement serialization for loading models
+		CSVReader reader = null;
+		try{
+			reader = new CSVReader(new FileReader(filename));
+			//In first column, since emotiv isn't smart, we need to do special parsing of data
+			String[] entries = reader.readNext();
+			String recordingName = entries[0];
+			String recordingDuration = entries[1];
+			int samplingRate = Integer.parseInt(entries[2]);
+			String subject = entries[3];
+			
+			while((entries=reader.readNext())!=null){
+				float[] data = new float[14];
+				for(int i=2;i<16;i++)
+					data[i-2]=Float.parseFloat(entries[i]);
+				DataPoint dataPoint = new DataPoint(data.clone());
+			}
+			
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 }
 
