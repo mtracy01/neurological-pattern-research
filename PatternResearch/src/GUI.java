@@ -75,7 +75,7 @@ public class GUI extends JPanel implements ActionListener{
 			
 		});
 		JButton selectFileButton = new JButton("Train with File");
-		selectFileButton.setPreferredSize(40,40);
+		//selectFileButton.setPreferredSize(40,40);
 		
 		JButton selectPredictButton = new JButton("Predict with File");
 		
