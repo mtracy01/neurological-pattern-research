@@ -32,12 +32,13 @@ public class GUI extends JPanel implements ActionListener{
 		BoxLayout boxLayout = new BoxLayout(buttonlow, BoxLayout.LINE_AXIS);
 		buttonlow.setLayout(boxLayout);
 		
-		JButton reportEvent = new JButton("Record Native Event");
-	    reportEvent.setVerticalTextPosition(AbstractButton.CENTER);
-	   
-	    reportEvent.setPreferredSize(new Dimension(40,40));
-	    reportEvent.setMnemonic(KeyEvent.VK_D);
-	    reportEvent.addActionListener(new ActionListener(){
+		
+		//Record native event button
+		JButton recordNativeEventButton = new JButton("Record Native Event");
+	    recordNativeEventButton.setVerticalTextPosition(AbstractButton.CENTER);
+	    recordNativeEventButton.setPreferredSize(new Dimension(40,40));
+	    recordNativeEventButton.setMnemonic(KeyEvent.VK_D);
+	    recordNativeEventButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){
             	createRecordNativeFrame();
@@ -46,11 +47,11 @@ public class GUI extends JPanel implements ActionListener{
 	  
 	    
 	    //Learn from Native Data button
-		JButton learnData = new JButton("Learn From Native Data");
-		learnData.setVerticalTextPosition(AbstractButton.CENTER);
-		learnData.setPreferredSize(new Dimension(40,40)); 
-		learnData.setMnemonic(KeyEvent.VK_D);
-	    learnData.addActionListener(new ActionListener(){
+		JButton loadNativeDataButton = new JButton("Learn From Native Data");
+		loadNativeDataButton.setVerticalTextPosition(AbstractButton.CENTER);
+		loadNativeDataButton.setPreferredSize(new Dimension(40,40)); 
+		loadNativeDataButton.setMnemonic(KeyEvent.VK_D);
+	    loadNativeDataButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -61,11 +62,11 @@ public class GUI extends JPanel implements ActionListener{
 	    
 	    
 	    //Recognize Live Events button
-		JButton dataEvent = new JButton("Recognizing Live Events (Out of Order)");
-		dataEvent.setPreferredSize(new Dimension(40,40));
-		dataEvent.setHorizontalTextPosition(AbstractButton.CENTER);
-		dataEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
-		dataEvent.addActionListener(new ActionListener(){
+		JButton recognizeLiveEventButton = new JButton("Recognizing Live Events (Out of Order)");
+		recognizeLiveEventButton.setPreferredSize(new Dimension(40,40));
+		recognizeLiveEventButton.setHorizontalTextPosition(AbstractButton.CENTER);
+		recognizeLiveEventButton.setVerticalTextPosition(AbstractButton.BOTTOM);
+		recognizeLiveEventButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -129,19 +130,19 @@ public class GUI extends JPanel implements ActionListener{
 		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
 		exitEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
 			
-		buttonup.add(reportEvent);
-		buttonup.add(learnData);
-		
-		buttonup.add(dataEvent);
+		buttonup.add(recordNativeEventButton);
+		buttonup.add(loadNativeDataButton);
+		buttonup.add(recognizeLiveEventButton);
 		buttonup.add(selectFileButton);
 		buttonup.add(selectPredictButton);
+		
 		buttonlow.add(exitEvent);
+		
 		whole.add(buttontop);
 		whole.add(buttonup);
 		whole.add(buttonlow);
 
 		f.getContentPane().add(whole);
-
 		f.setVisible(true);
 		
 		
@@ -149,9 +150,11 @@ public class GUI extends JPanel implements ActionListener{
 
 	
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
+	
+	
+	
+	//Creates the dialog view for inputting specifications for recording frames
 	public static void createRecordNativeFrame(){
         EventQueue.invokeLater(new Runnable(){
             @Override
@@ -203,7 +206,6 @@ public class GUI extends JPanel implements ActionListener{
 					}
                 	
                 });
-                
                 
                 
                 //Buttons added to frame here after being declared and having parameters set
@@ -270,12 +272,12 @@ public class GUI extends JPanel implements ActionListener{
 	
 	public static void recognizeData(){
 		if(reg){
-		Thread t1 = new Thread(new Runnable() {
-		     public void run() {
-		          Main.startRecognition();
-		     }
-		});  
-		t1.start();
+			Thread t1 = new Thread(new Runnable() {
+			     public void run() {
+			          Main.startRecognition();
+			     }
+			});  
+			t1.start();
 		}
 		
 		else Main.stopRecognition();
@@ -306,12 +308,10 @@ public class GUI extends JPanel implements ActionListener{
                 	ptime--;
                 	pdu.setText("Preparing time: " + Double.toString(ptime));
                 }
-                if(ptime == 0.0){	
+                if(ptime == 0.0)
                 	rdu.setText("Remaining time: " + Double.toString(t));
-                }
                 if ((t--)< 1.0){
                     timer.cancel();
-                    
                 	f1.setVisible(false);
                 }
             }

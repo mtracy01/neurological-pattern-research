@@ -5,18 +5,22 @@ public class PreprocessData {
 	private String record;
 	private int sample;
 	private String subject;
-	private ArrayList<DataPoint> points = new ArrayList<>();
+	private ArrayList<float[]> points = new ArrayList<>();
 	public PreprocessData(String title, String record, int sample, String subject ){
 		this.title = title;
 		this.record = record;
 		this.sample = sample;
 		this.subject = subject;
 	}
-	public ArrayList<DataPoint> getDataPoints(){
+	public ArrayList<float[]> getDataPoints(){
 		return this.points;
 	}
-	public void addDataPoint(DataPoint point){
+	public void addDataPoint(float[] point){
 		this.points.add(point);
+	}
+	
+	public float[] getDataPoint(int index){
+		return points.get(index);
 	}
 	
 	public String getTitle(){
