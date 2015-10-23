@@ -3,10 +3,10 @@ import java.util.*;
 public class PreprocessData {
 	private String title;
 	private String record;
-	private String sample;
+	private int sample;
 	private String subject;
 	private ArrayList<DataPoint> points = new ArrayList<>();
-	public PreprocessData(String title, String record, String sample, String subject ){
+	public PreprocessData(String title, String record, int sample, String subject ){
 		this.title = title;
 		this.record = record;
 		this.sample = sample;
@@ -25,7 +25,7 @@ public class PreprocessData {
 	public String getRecord(){
 		return this.record;
 	}
-	public String getSample(){
+	public int getSample(){
 		return this.sample;
 	}
 	public String getSubject(){

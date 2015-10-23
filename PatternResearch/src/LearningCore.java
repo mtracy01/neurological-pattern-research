@@ -70,15 +70,17 @@ public class LearningCore {
 			String recordingDuration = entries[1];
 			int samplingRate = Integer.parseInt(entries[2]);
 			String subject = entries[3];
-			
+			PreprocessData pd = new PreprocessData(recordingName, recordingDuration, samplingRate,subject);
+			Main.preprocessData.add(pd);
 			while((entries=reader.readNext())!=null){
 				float[] data = new float[14];
 				for(int i=2;i<16;i++)
 					data[i-2]=Float.parseFloat(entries[i]);
 				DataPoint dataPoint = new DataPoint(data.clone());
+				pd.addDataPoint(dataPoint);
 			}
 			
-			
+		
 		} catch(Exception e){
 			e.printStackTrace();
 		}

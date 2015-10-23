@@ -17,7 +17,7 @@ public class Main extends JPanel{
 	public static ArrayList<String> rawName = new ArrayList<>();
 	public static Hashtable<String,RawData> rawPatterns = new Hashtable<>();
 	public static ArrayList<String> rawDataNames = new ArrayList<String>();
-	
+	public static ArrayList<PreprocessData> preprocessData = new ArrayList<>();
 	public static void main(String[] args){
 		GUI gui = new GUI();
 		gui.startWindow();
