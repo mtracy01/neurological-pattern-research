@@ -28,7 +28,7 @@ public class GUI extends JPanel implements ActionListener{
 		label.setFont(new Font("TimesRoman", Font.ITALIC, 25));
 		buttontop.add(label);
 		
-		JPanel buttonup = new JPanel(new GridLayout(3,1));
+		JPanel buttonup = new JPanel(new GridLayout(4,1));
 		JPanel buttonlow = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(buttonlow, BoxLayout.LINE_AXIS);
 		buttonlow.setLayout(boxLayout);
@@ -75,9 +75,29 @@ public class GUI extends JPanel implements ActionListener{
 			
 		});
 		JButton selectFileButton = new JButton("Train with File");
-		//selectFileButton.setPreferredSize(40,40);
+		selectFileButton.setPreferredSize(new Dimension(40,40));
+		selectFileButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO: Create GUI for specifying file
+			}
+		});
 		
 		JButton selectPredictButton = new JButton("Predict with File");
+		selectPredictButton.setPreferredSize(new Dimension(40,40));
+		selectPredictButton.setHorizontalTextPosition(AbstractButton.CENTER);
+		selectPredictButton.setVerticalTextPosition(AbstractButton.BOTTOM);
+		selectPredictButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				recognizeData();
+				
+			}
+			
+		});
+		
 		
 		JButton exitEvent = new JButton("Exit");
 		
@@ -88,6 +108,8 @@ public class GUI extends JPanel implements ActionListener{
 		buttonup.add(learnData);
 		
 		buttonup.add(dataEvent);
+		buttonup.add(selectFileButton);
+		buttonup.add(selectPredictButton);
 		buttonlow.add(exitEvent);
 		whole.add(buttontop);
 		whole.add(buttonup);
