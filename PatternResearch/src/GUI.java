@@ -44,7 +44,7 @@ public class GUI extends JPanel implements ActionListener{
 	public void startWindow(){
 		JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(400,500);
+		f.setSize(550,500);
 
 		JPanel whole = new JPanel(new GridLayout(5,0));
 		JPanel buttontop = new JPanel();
@@ -102,9 +102,9 @@ public class GUI extends JPanel implements ActionListener{
 		
 		//Preprocess Raw CSV button
 		final JFileChooser fc = new JFileChooser();
-		JButton selectFileButton = new JButton("Preprocess CSV");
-		selectFileButton.setPreferredSize(new Dimension(40,40));
-		selectFileButton.addActionListener(new ActionListener(){
+		JButton selectCSVButton = new JButton("Preprocess CSV");
+		selectCSVButton.setPreferredSize(new Dimension(40,40));
+		selectCSVButton.addActionListener(new ActionListener(){
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,9 +116,8 @@ public class GUI extends JPanel implements ActionListener{
 			}
 		});
 		
-		
-		//TODO: Ask user to select a ParsedData file to perform a prediction on
-		JButton selectPredictButton = new JButton("Predict with File");
+		//Ask user to select a ParsedData file to perform a prediction on
+		JButton selectPredictButton = new JButton("Predict with ParsedData File");
 		selectPredictButton.setPreferredSize(new Dimension(40,40));
 		selectPredictButton.setHorizontalTextPosition(AbstractButton.CENTER);
 		selectPredictButton.setVerticalTextPosition(AbstractButton.BOTTOM);
@@ -126,39 +125,40 @@ public class GUI extends JPanel implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					
+					//TODO: Call function that will get data into object
+				
+					//TODO: Create and call function to make prediction (this will probably require the creation of a GUI
+					// Element to display results of the prediction
 			}
 			
 		});
 		
-		//TODO: Create a new frame to encapsulate some of the new functionality
-		//Load Preprocessed Data.
-		//TODO: Create button and functionality to load all preprocessed data in a file using deserialzation
+		//Button to launch configuration panel
+		JButton setConfigurationButton = new JButton("Set Configuration");
+		setConfigurationButton.setPreferredSize(new Dimension(40,40));
+		setConfigurationButton.setHorizontalTextPosition(AbstractButton.CENTER);
+		setConfigurationButton.setVerticalTextPosition(AbstractButton.BOTTOM);
+		setConfigurationButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ConfigurationGUI configGUI = new ConfigurationGUI();
+				configGUI.startWindow();
+			}
+			
+		});
 		
-		//Save Preprocessed Data.
-		//TODO: Create button and functionality to save all of the preprocessed data into a file using serialization
-		
-		
-		//Clear Preprocessed Data.
-		
-		
-		//Save a Particular Preprocessed Data
-		
-		
-		//Drop a Particular Preprocessed Data
-		//TODO: Create button and methods for dropping a particular point from the data set
-		
-		
+		//Exit Button
 		JButton exitEvent = new JButton("Exit");
-		
 		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
 		exitEvent.setVerticalTextPosition(AbstractButton.BOTTOM);
 			
 		buttonup.add(recordNativeEventButton);
+		buttonup.add(selectCSVButton);
 		buttonup.add(loadNativeDataButton);
-		buttonup.add(recognizeLiveEventButton);
-		buttonup.add(selectFileButton);
 		buttonup.add(selectPredictButton);
+		buttonup.add(recognizeLiveEventButton);
+		buttonup.add(setConfigurationButton);
 		
 		buttonlow.add(exitEvent);
 		
