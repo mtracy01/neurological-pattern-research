@@ -215,6 +215,7 @@ public class Main extends JPanel{
 							}
 							
 							dataSet.addRow(data2);
+							
 							/*//TODO: Set up testing function LearningCore.testNeuralNetwork(data);
 							DataSet dataSet = new DataSet(17,1);
 							for(int i=0; i<17;i++){
