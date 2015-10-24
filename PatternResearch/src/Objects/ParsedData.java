@@ -7,7 +7,7 @@ public class ParsedData {
 	private String recordDuration;
 	private int sampleRate;
 	private String subject;
-	private ArrayList<float[]> points = new ArrayList<>();
+	private ArrayList<double[]> points = new ArrayList<>();
 	
 	//TODO: Convert recordDuration to a more useful variable in this constructor
 	public ParsedData(String title, String recordDuration, int sampleRate, String subject ){
@@ -16,14 +16,14 @@ public class ParsedData {
 		this.sampleRate = sampleRate;
 		this.subject = subject;
 	}
-	public ArrayList<float[]> getDataPoints(){
+	public ArrayList<double[]> getDataPoints(){
 		return this.points;
 	}
-	public void addDataPoint(float[] point){
+	public void addDataPoint(double[] point){
 		this.points.add(point);
 	}
 	
-	public float[] getDataPoint(int index){
+	public double[] getDataPoint(int index){
 		return points.get(index);
 	}
 	

@@ -26,9 +26,9 @@ public class FileHelper {
 			
 			//Take all of the sampled data and put it in the object
 			while((entries=reader.readNext())!=null){
-				float[] data = new float[14];
+				double[] data = new double[14];
 				for(int i=2;i<16;i++)
-					data[i-2]=Float.parseFloat(entries[i]);
+					data[i-2]=Double.parseDouble(entries[i]);
 				pd.addDataPoint(data.clone());
 			}
 			

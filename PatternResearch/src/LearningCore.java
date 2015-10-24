@@ -20,15 +20,16 @@ public class LearningCore {
 	public static Hashtable<Double,String> nameMap = new Hashtable<>();
 	
 	public static void createMLPerceptron(){
+		
 		DataSet trainingSet = new DataSet(17,1);
 		nameMap.clear();
 		double i=0;
 		int size = 0;
+		
 		for(RawNativeData r: rawData){										  //For each RawData that we are training
 			nameMap.put(i,r.getName());
 			for(double j=0;j<r.getCount();j++){							//For each raw pattern in that data
-				ArrayList<double[]> dataPoints = r.getRawPattern((int)j);
-				
+				ArrayList<double[]> dataPoints = r.getRawPattern((int)j);	
 				for(double[] arr: dataPoints){						 //For each data point in a raw data
 					trainingSet.addRow(arr,new double[]{i});		//arr is the row input, j is what would be the predicted result
 					size++;
@@ -36,10 +37,12 @@ public class LearningCore {
 			}
 			i++;
 		}
-		
 		mlPerceptron = new MultiLayerPerceptron(TransferFunctionType.TANH,17,size,1);
 		mlPerceptron.learn(trainingSet);
 	}
+	
+
+	
 	
 	public static void testNeuralNetwork(DataSet testSet) {
 		double average = 0;
