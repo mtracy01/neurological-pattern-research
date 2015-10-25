@@ -125,18 +125,13 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Call function that will clear the current data set
 				String[] recNames = Data.getRecordingNames();
-				JOptionPane optionPane = new JOptionPane("Select a recording to save");
-				optionPane.setOptions(recNames);
+				int response = JOptionPane.showOptionDialog(f,"Select Recording","Select a Recording",0,0,null, recNames,recNames);
 				
-				optionPane.createDialog(f, "Select Point");
-				//optionPane.
 				JFileChooser c = new JFileChooser();
 			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
-			      if (rVal == JFileChooser.APPROVE_OPTION) {
-			    	  FileHelper.savePoint(c.getCurrentDirectory().toString() + c.getSelectedFile().getName(), 0);
-			      }
+			      if (rVal == JFileChooser.APPROVE_OPTION) 
+			    	  FileHelper.savePoint(c.getCurrentDirectory().toString() + c.getSelectedFile().getName(), response);
 			      if (rVal == JFileChooser.CANCEL_OPTION) {
 			        filename.setText("You pressed cancel");
 			        dir.setText("");
@@ -154,7 +149,17 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//TODO: Call function that will clear the current data set
+				String[] recNames = Data.getRecordingNames();
+				int response = JOptionPane.showOptionDialog(f,"Select Recording","Select a Recording",0,0,null, recNames,recNames);
+				
+				JFileChooser c = new JFileChooser();
+			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
+			      if (rVal == JFileChooser.APPROVE_OPTION) 
+			    	  FileHelper.removePoint(response);
+			      if (rVal == JFileChooser.CANCEL_OPTION) {
+			        filename.setText("You pressed cancel");
+			        dir.setText("");
+			      }
 			}
 			
 		});

@@ -103,4 +103,11 @@ public class FileHelper {
 		}
 		return true;
 	}
+	
+	public static boolean removePoint(int recordingIndex){
+		if(recordingIndex> Data.parsedData.size())
+			return false;
+		Data.parsedData.remove(recordingIndex);
+		return true;
+	}
 }
