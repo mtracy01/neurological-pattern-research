@@ -19,15 +19,6 @@ import helperClasses.FileHelper;
 
 public class ConfigurationGUI extends JPanel implements ActionListener {
 	
-	/*TODO:
-	 * Save the entire parsedDataSet collection to a file
-	 * Save a specific parsedData to a file
-	 * Delete a specific parsedData
-	 * Delete the current parsedDataSet
-	 * Load a parsedDataSet from a file
-	 * Load a particular parsedData from a file
-	 */
-
 	private JTextField filename = new JTextField(), dir = new JTextField();
 	
 	public void startWindow(){
@@ -58,7 +49,11 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//TODO: Call function that will load data and replace the current data set
+				JFileChooser c = new JFileChooser();
+				int rVal= c.showOpenDialog(ConfigurationGUI.this);
+				if(rVal==JFileChooser.APPROVE_OPTION){
+					FileHelper.loadDataSet(c.getSelectedFile().getAbsolutePath());
+				}
 			}
 			
 		});
@@ -72,19 +67,15 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Call function that will save the current data set to a file
-				
 				JFileChooser c = new JFileChooser();
 			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
-			      if (rVal == JFileChooser.APPROVE_OPTION) {
-			    	  FileHelper.saveDataSet(c.getCurrentDirectory().toString() + c.getSelectedFile().getName());
-			      }
+			      if (rVal == JFileChooser.APPROVE_OPTION)
+			    	  FileHelper.saveDataSet(c.getCurrentDirectory().toString() +  "/" + c.getSelectedFile().getName());
 			      if (rVal == JFileChooser.CANCEL_OPTION) {
 			        filename.setText("You pressed cancel");
 			        dir.setText("");
 			      }
 			}
-			
 		});
 		
 		//Clear Data Set Button
@@ -110,8 +101,10 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO: File Selector, then call AddPoint
-
+				JFileChooser c = new JFileChooser();
+				int rVal= c.showOpenDialog(ConfigurationGUI.this);
+				if(rVal==JFileChooser.APPROVE_OPTION)
+					FileHelper.loadPoint(c.getSelectedFile().getAbsolutePath());
 			}
 			
 		});
@@ -131,7 +124,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 				JFileChooser c = new JFileChooser();
 			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
 			      if (rVal == JFileChooser.APPROVE_OPTION) 
-			    	  FileHelper.savePoint(c.getCurrentDirectory().toString() + c.getSelectedFile().getName(), response);
+			    	  FileHelper.savePoint(c.getCurrentDirectory().toString() + "/" + c.getSelectedFile().getName(), response);
 			      if (rVal == JFileChooser.CANCEL_OPTION) {
 			        filename.setText("You pressed cancel");
 			        dir.setText("");
