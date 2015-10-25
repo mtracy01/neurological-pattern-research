@@ -144,15 +144,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				String[] recNames = Data.getRecordingNames();
 				int response = JOptionPane.showOptionDialog(f,"Select Recording","Select a Recording",0,0,null, recNames,recNames);
-				
-				JFileChooser c = new JFileChooser();
-			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
-			      if (rVal == JFileChooser.APPROVE_OPTION) 
-			    	  FileHelper.removePoint(response);
-			      if (rVal == JFileChooser.CANCEL_OPTION) {
-			        filename.setText("You pressed cancel");
-			        dir.setText("");
-			      }
+				FileHelper.removePoint(response);
 			}
 			
 		});
