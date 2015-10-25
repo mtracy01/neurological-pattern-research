@@ -33,6 +33,10 @@ import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.neuroph.core.data.DataSet;
+
+import LearningProcess.ParsedDataLearningCore;
+import Objects.ParsedData;
 import helperClasses.FileHelper;
 public class GUI extends JPanel implements ActionListener{
 	static String modelName;
@@ -112,6 +116,7 @@ public class GUI extends JPanel implements ActionListener{
 				if(ret==JFileChooser.APPROVE_OPTION){
 					File file = fc.getSelectedFile();
 					FileHelper.loadCSVData(file.getAbsolutePath());
+					ParsedDataLearningCore.createMLPerceptron();
 				}
 			}
 		});
@@ -125,10 +130,18 @@ public class GUI extends JPanel implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//TODO: Call function that will get data into object
-				
-					//TODO: Create and call function to make prediction (this will probably require the creation of a GUI
-					// Element to display results of the prediction
+				int ret = fc.showOpenDialog(GUI.this);
+				if(ret==JFileChooser.APPROVE_OPTION){
+					File file = fc.getSelectedFile();
+					ParsedData parsedData = FileHelper.getParsedData(file.getAbsolutePath());
+					if(parsedData!=null){
+						//ParsedDataLearningCore. calculate Prediction(parsedData);
+						DataSet dataSet = ParsedDataLearningCore.convertToDataSet(parsedData);
+						String s = ParsedDataLearningCore.testNeuralNetwork(dataSet);
+						JOptionPane.showMessageDialog(f, "The prediction result is "+s);
+					}
+					
+				}
 			}
 			
 		});

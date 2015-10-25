@@ -14,7 +14,7 @@ import Objects.ParsedData;
 
 public class FileHelper {
 	//TODO: Implement all functions having to do with data storage and loading here.
-	
+	public static ParsedData pd;
 	
 	public static void loadCSVData(String filename){
 		CSVReader reader = null;
@@ -26,8 +26,7 @@ public class FileHelper {
 			String recordingDuration = getAfterColon(entries[1]);
 			int samplingRate = Integer.parseInt(entries[2].split(Pattern.quote(":"))[1]);
 			String subject = getAfterColon(entries[3]);
-			ParsedData pd = new ParsedData(recordingName, recordingDuration, samplingRate,subject);
-			Data.parsedData.add(pd);
+			pd = new ParsedData(recordingName, recordingDuration, samplingRate,subject);
 			
 			//Take all of the sampled data and put it in the object
 			while((entries=reader.readNext())!=null){
@@ -36,6 +35,7 @@ public class FileHelper {
 					data[i-2]=Double.parseDouble(entries[i]);
 				pd.addDataPoint(data.clone());
 			}
+			Data.parsedData.add(pd);
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -109,5 +109,17 @@ public class FileHelper {
 			return false;
 		Data.parsedData.remove(recordingIndex);
 		return true;
+	}
+	
+	public static ParsedData getParsedData(String fileName){
+		try{
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));	
+			ParsedData ret = (ParsedData)in.readObject();
+			in.close();
+			return ret;
+		} catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
