@@ -1,8 +1,9 @@
 package Objects;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class ParsedData {
+public class ParsedData implements Serializable {
 	private String title;
 	private String recordDuration;
 	private int sampleRate;

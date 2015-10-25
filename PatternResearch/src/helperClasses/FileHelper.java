@@ -1,6 +1,10 @@
 package helperClasses;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.regex.Pattern;
 
 import com.opencsv.CSVReader;
@@ -32,8 +36,7 @@ public class FileHelper {
 					data[i-2]=Double.parseDouble(entries[i]);
 				pd.addDataPoint(data.clone());
 			}
-			
-		
+
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -43,15 +46,61 @@ public class FileHelper {
 		return in.split(Pattern.quote(":"))[1];
 	}
 	
-	public static boolean loadDataSet(String filename){
-		/*TODO:
-		 * Check if File is valid
-		 * if not, return error
-		 * clear current data set
-		 * create file reader
-		 * read first line as number of objects
-		 * 
-		 */
+	public static boolean loadDataSet(String fileName){
+		try{
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
+			Data.parsedData.clear();
+			Object object = in.readObject();
+			while(object!=null){
+				Data.parsedData.add((ParsedData)object);
+				object=in.readObject();
+			}
+			in.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean saveDataSet(String fileName){
+		try{
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+			for(ParsedData parsedData: Data.parsedData)
+				out.writeObject(parsedData);
+			out.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean loadPoint(String fileName){
+		try{
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
+			//TODO: Later, try to add error checking to make sure two points
+			//with the same title are not in the ArrayList
+			Data.parsedData.add((ParsedData)in.readObject());
+			in.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean savePoint(String fileName, int recordingIndex){
+		ParsedData dataPoint = null;
+		dataPoint = Data.parsedData.get(recordingIndex);
+		try{
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+			out.writeObject(dataPoint);
+			out.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 		return true;
 	}
 }

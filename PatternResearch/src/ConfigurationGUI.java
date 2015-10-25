@@ -10,8 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import Objects.Data;
+import helperClasses.FileHelper;
 
 public class ConfigurationGUI extends JPanel implements ActionListener {
 	
@@ -27,7 +31,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 	private JTextField filename = new JTextField(), dir = new JTextField();
 	
 	public void startWindow(){
-		JFrame f = new JFrame("Display Window");
+		final JFrame f = new JFrame("Display Window");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(350, 350);
 		
@@ -71,11 +75,9 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 				//TODO: Call function that will save the current data set to a file
 				
 				JFileChooser c = new JFileChooser();
-			      // Demonstrate "Save" dialog:
 			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
 			      if (rVal == JFileChooser.APPROVE_OPTION) {
-			        filename.setText(c.getSelectedFile().getName());
-			        dir.setText(c.getCurrentDirectory().toString());
+			    	  FileHelper.saveDataSet(c.getCurrentDirectory().toString() + c.getSelectedFile().getName());
 			      }
 			      if (rVal == JFileChooser.CANCEL_OPTION) {
 			        filename.setText("You pressed cancel");
@@ -94,7 +96,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//TODO: Call function that will clear the current data set
+					Data.clear();
 			}
 			
 		});
@@ -108,7 +110,8 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//TODO: Call function that will clear the current data set
+				//TODO: File Selector, then call AddPoint
+
 			}
 			
 		});
@@ -122,7 +125,22 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//TODO: Call function that will clear the current data set
+				//TODO: Call function that will clear the current data set
+				String[] recNames = Data.getRecordingNames();
+				JOptionPane optionPane = new JOptionPane("Select a recording to save");
+				optionPane.setOptions(recNames);
+				
+				optionPane.createDialog(f, "Select Point");
+				//optionPane.
+				JFileChooser c = new JFileChooser();
+			      int rVal = c.showSaveDialog(ConfigurationGUI.this);
+			      if (rVal == JFileChooser.APPROVE_OPTION) {
+			    	  FileHelper.savePoint(c.getCurrentDirectory().toString() + c.getSelectedFile().getName(), 0);
+			      }
+			      if (rVal == JFileChooser.CANCEL_OPTION) {
+			        filename.setText("You pressed cancel");
+			        dir.setText("");
+			      }
 			}
 			
 		});
