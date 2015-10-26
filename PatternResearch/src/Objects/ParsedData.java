@@ -41,5 +41,6 @@ public class ParsedData implements Serializable {
 		return this.subject;
 	}
 	
+	
 }
 

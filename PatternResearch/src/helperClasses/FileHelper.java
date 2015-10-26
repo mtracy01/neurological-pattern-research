@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import com.opencsv.CSVReader;
 
 import Objects.Data;
+import Objects.NormalizeData;
 import Objects.ParsedData;
 
 public class FileHelper {
@@ -35,7 +36,8 @@ public class FileHelper {
 					data[i-2]=Double.parseDouble(entries[i]);
 				pd.addDataPoint(data.clone());
 			}
-			Data.parsedData.add(pd);
+			
+			Data.parsedData.add(NormalizeData.normalizeParsedData(pd));
 
 		} catch(Exception e){
 			e.printStackTrace();
