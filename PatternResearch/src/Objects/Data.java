@@ -2,12 +2,16 @@ package Objects;
 
 import java.util.ArrayList;
 
+import org.neuroph.nnet.MultiLayerPerceptron;
+
 //Purpose: Stores some long term variables for global access across the project
 public class Data {
 	public static ArrayList<ParsedData> parsedData = new ArrayList<>();
+	public static ArrayList<Tuple<String,MultiLayerPerceptron>> perceptrons = new ArrayList<>();
 	
 	public static void clear(){
 		parsedData.clear();
+		perceptrons.clear();
 	}
 	
 	public static String[] getRecordingNames(){
@@ -18,4 +22,6 @@ public class Data {
 		result = names.toArray(result);
 		return result;
 	}
+	
+	
 }

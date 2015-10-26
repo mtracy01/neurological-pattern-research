@@ -37,6 +37,7 @@ import org.neuroph.core.data.DataSet;
 
 import LearningProcess.ParsedDataLearningCore;
 import Objects.ParsedData;
+import Objects.Tuple;
 import helperClasses.FileHelper;
 public class GUI extends JPanel implements ActionListener{
 	static String modelName;
@@ -135,10 +136,8 @@ public class GUI extends JPanel implements ActionListener{
 					File file = fc.getSelectedFile();
 					ParsedData parsedData = FileHelper.getParsedData(file.getAbsolutePath());
 					if(parsedData!=null){
-						//ParsedDataLearningCore. calculate Prediction(parsedData);
-						DataSet dataSet = ParsedDataLearningCore.convertToDataSet(parsedData);
-						String s = ParsedDataLearningCore.testNeuralNetwork(dataSet);
-						JOptionPane.showMessageDialog(f, "The prediction result is "+s);
+						Tuple<Double,String> result = ParsedDataLearningCore.testNeuralNetwork(parsedData);
+						JOptionPane.showMessageDialog(f, "The prediction result is "+result.y + "Prob: " + result.x);
 					}
 					
 				}

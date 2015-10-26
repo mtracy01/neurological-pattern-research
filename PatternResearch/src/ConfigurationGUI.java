@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import LearningProcess.ParsedDataLearningCore;
 import Objects.Data;
 import helperClasses.FileHelper;
 
@@ -53,6 +54,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 				int rVal= c.showOpenDialog(ConfigurationGUI.this);
 				if(rVal==JFileChooser.APPROVE_OPTION){
 					FileHelper.loadDataSet(c.getSelectedFile().getAbsolutePath());
+					ParsedDataLearningCore.createMLPerceptron();
 				}
 			}
 			
