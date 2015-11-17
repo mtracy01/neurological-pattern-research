@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 
 import LearningProcess.ParsedDataLearningCore;
 import Objects.Data;
+import Objects.NormalizeData;
 import helperClasses.FileHelper;
 
 public class ConfigurationGUI extends JPanel implements ActionListener {
@@ -151,6 +153,36 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 			
 		});
 		
+		//Process directory of CSV data
+		final JFileChooser dc = new JFileChooser();
+		JButton selectCSVDirButton = new JButton("Preprocess CSV Directory");
+		selectCSVDirButton.setPreferredSize(new Dimension(40,40));
+		selectCSVDirButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int ret = dc.showOpenDialog(ConfigurationGUI.this);
+				if(ret==JFileChooser.APPROVE_OPTION){
+					File file = dc.getSelectedFile();
+					
+					if(!file.isDirectory())
+						JOptionPane.showMessageDialog(f,"Not a directory!","Bad Filetype",JOptionPane.ERROR_MESSAGE);
+					else{
+						Object[] options = {"Yes","No"};
+						int n = JOptionPane.showOptionDialog(f,"Would you like to also load this data into the program?",
+								"Loading Data",
+								JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE,
+								null,
+								options,
+								"Cancel");
+						if(n<2)
+							NormalizeData.normalizePDDirectory(file,n);						
+					}
+				}
+			}
+		});
+		
 		//Exit Button
 		JButton exitEvent = new JButton("Exit");
 		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -162,7 +194,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 		buttonup.add(savePointButton);
 		buttonup.add(clearDataButton);
 		buttonup.add(deletePointButton);
-		
+		buttonup.add(selectCSVDirButton);
 		buttonlow.add(exitEvent);
 		
 		whole.add(buttontop);

@@ -1,5 +1,6 @@
 package helperClasses;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -17,10 +18,10 @@ public class FileHelper {
 	//TODO: Implement all functions having to do with data storage and loading here.
 	public static ParsedData pd;
 	
-	public static void loadCSVData(String filename){
+	public static ParsedData loadCSVData(File file,int option){
 		CSVReader reader = null;
 		try{
-			reader = new CSVReader(new FileReader(filename));
+			reader = new CSVReader(new FileReader(file.getAbsolutePath()));
 			//In first column, since Emotiv isn't smart, we need to do special parsing of data
 			String[] entries = reader.readNext();
 			String recordingName = getAfterColon(entries[0]);
@@ -37,11 +38,14 @@ public class FileHelper {
 				pd.addDataPoint(data.clone());
 			}
 			
-			Data.parsedData.add(NormalizeData.normalizeParsedData(pd));
-
+			if(option==0)
+				Data.parsedData.add(NormalizeData.normalizeParsedData(pd));
+			reader.close();
 		} catch(Exception e){
 			e.printStackTrace();
+			return null;
 		}
+		return pd;
 	}
 	
 	public static String getAfterColon(String in){
@@ -98,6 +102,18 @@ public class FileHelper {
 		try{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
 			out.writeObject(dataPoint);
+			out.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean savePoint(File file, ParsedData parsedData){
+		try{
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
+			out.writeObject(parsedData);
 			out.close();
 		} catch(Exception e){
 			e.printStackTrace();

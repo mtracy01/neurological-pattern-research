@@ -116,7 +116,7 @@ public class GUI extends JPanel implements ActionListener{
 				int ret = fc.showOpenDialog(GUI.this);
 				if(ret==JFileChooser.APPROVE_OPTION){
 					File file = fc.getSelectedFile();
-					FileHelper.loadCSVData(file.getAbsolutePath());
+					FileHelper.loadCSVData(file,0);
 					ParsedDataLearningCore.createMLPerceptron();
 				}
 			}

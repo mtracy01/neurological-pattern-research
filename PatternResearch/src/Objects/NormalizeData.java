@@ -1,6 +1,9 @@
 package Objects;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import helperClasses.FileHelper;
 
 public class NormalizeData {
 	public static Tuple<Double[], Double[]> findMaxMin(ArrayList<double[]> parsedData){
@@ -48,7 +51,31 @@ public class NormalizeData {
 		return pdnew;
 	}
 	
-	
-	
-
+	public static void normalizePDDirectory(File dir, int option){
+		String dPath = dir.getAbsolutePath();
+		while(dPath.charAt(dPath.length()-1)!='/')
+			dPath = dPath.substring(0,dPath.length()-1);
+		
+		dPath +="parsedData";
+		try{
+			File nDir = new File(dPath);
+			nDir.mkdir();
+		} catch(SecurityException e){
+			e.printStackTrace();
+			return;
+		}
+		dPath += "/";
+		
+		File[] files = dir.listFiles();
+		
+		for(File file: files){
+			String fname = file.getName();
+			ParsedData parsedData = FileHelper.loadCSVData(file, option);
+			File nFile = new File(dPath + fname);
+			boolean check = FileHelper.savePoint(nFile, parsedData);
+			if(!check){
+				//TODO: Create error dialog
+			}
+		}
+	}
 }
