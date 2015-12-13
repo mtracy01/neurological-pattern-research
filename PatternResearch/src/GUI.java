@@ -36,6 +36,8 @@ import javax.swing.event.ListSelectionListener;
 import org.neuroph.core.data.DataSet;
 
 import LearningProcess.ParsedDataLearningCore;
+import LearningProcess.SVMLearningCore;
+import Objects.NormalizeData;
 import Objects.ParsedData;
 import Objects.Tuple;
 import helperClasses.FileHelper;
@@ -45,6 +47,7 @@ public class GUI extends JPanel implements ActionListener{
 	static double recordingDuration;
 	static String getName;
 	static int clickTime;
+	public static int learningType = 1; //0 = MLPerceptron, 1= SVM
 	static boolean reg = true;
 	public void startWindow(){
 		JFrame f = new JFrame("Display Window");
@@ -117,7 +120,10 @@ public class GUI extends JPanel implements ActionListener{
 				if(ret==JFileChooser.APPROVE_OPTION){
 					File file = fc.getSelectedFile();
 					FileHelper.loadCSVData(file,0);
-					ParsedDataLearningCore.createMLPerceptron();
+					if(learningType==0)
+						ParsedDataLearningCore.createMLPerceptron();
+					if(learningType==1)
+						SVMLearningCore.createSVM();
 				}
 			}
 		});
@@ -136,8 +142,15 @@ public class GUI extends JPanel implements ActionListener{
 					File file = fc.getSelectedFile();
 					ParsedData parsedData = FileHelper.getParsedData(file.getAbsolutePath());
 					if(parsedData!=null){
-						Tuple<Double,String> result = ParsedDataLearningCore.testNeuralNetwork(parsedData);
-						JOptionPane.showMessageDialog(f, "The prediction result is "+result.y + "Prob: " + result.x);
+						parsedData = NormalizeData.normalizeParsedData(parsedData);
+						if(learningType==0){
+							Tuple<Double,String>result = ParsedDataLearningCore.testNeuralNetwork(parsedData);
+							JOptionPane.showMessageDialog(f, "The prediction result is "+result.y + "Prob: " + result.x);
+						}
+						if(learningType==1){
+							String result = SVMLearningCore.classifyData(parsedData);
+							JOptionPane.showMessageDialog(f,"The Prediction result is " + result);
+						}
 					}
 					
 				}

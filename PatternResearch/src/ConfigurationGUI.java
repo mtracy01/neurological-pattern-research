@@ -183,6 +183,23 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 			}
 		});
 		
+		JButton selectLearnTypeButton = new JButton("Select Learning Algorithm");
+		selectLearnTypeButton.setPreferredSize(new Dimension(40,40));
+		selectLearnTypeButton.setHorizontalTextPosition(AbstractButton.CENTER);
+		selectLearnTypeButton.setVerticalTextPosition(AbstractButton.TOP);
+		selectLearnTypeButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object[] options = {"MLPerceptron","SVM"};
+				int n = JOptionPane.showOptionDialog(f, "Select an algorithm:", "Select Algorithm", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Cancel");
+				if(n==0)
+					GUI.learningType=0;
+				if(n==1)
+					GUI.learningType=1;
+			}
+		});
+		
 		//Exit Button
 		JButton exitEvent = new JButton("Exit");
 		exitEvent.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -195,6 +212,7 @@ public class ConfigurationGUI extends JPanel implements ActionListener {
 		buttonup.add(clearDataButton);
 		buttonup.add(deletePointButton);
 		buttonup.add(selectCSVDirButton);
+		buttonup.add(selectLearnTypeButton);
 		buttonlow.add(exitEvent);
 		
 		whole.add(buttontop);

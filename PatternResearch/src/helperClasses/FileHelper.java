@@ -1,13 +1,15 @@
 package helperClasses;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
-
+import java.io.PrintWriter;
 import com.opencsv.CSVReader;
 
 import Objects.Data;
@@ -138,6 +140,42 @@ public class FileHelper {
 		} catch(Exception e){
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public static void createSVMDataSet(){
+		try{
+			PrintWriter writer = new PrintWriter("data.data","UTF-8");
+			for(ParsedData pd: Data.parsedData){
+				String classification = pd.getSubject();
+				ArrayList<double[]> data = pd.getDataPoints();
+				for(double[] point: data){
+					for(double attr: point)
+						writer.print(attr + ",");
+					writer.println(classification);
+				}
+			}
+			writer.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error at FileHelper.createSVMDataSet");
+		}
+	}
+	
+	public static void createSVMPDSet(ParsedData pd){
+		try{
+			PrintWriter writer = new PrintWriter("data.data","UTF-8");
+			String classification = pd.getSubject();
+			ArrayList<double[]> data = pd.getDataPoints();
+			for(double[] point: data){
+				for(double attr: point)
+					writer.print(attr + ",");
+				writer.println(classification);
+			}
+			writer.close();
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error at FileHelper.createSVMPDSet");
 		}
 	}
 }
