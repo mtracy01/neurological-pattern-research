@@ -7,6 +7,7 @@ import Objects.ParsedData;
 public class AutoGenerator {
 	String path = "/Users/Ji/Desktop/neurological-pattern-research/TestData/";
 	int round  =3;
+	int valid = 0;
 	public void listFilesForFolder(final File folder) {
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
@@ -37,20 +38,15 @@ public class AutoGenerator {
 		String[] recNames = Data.getRecordingNames();
 		String color[] = {"Blue", "Green", "Red", "Yellow"};
 		for(int i = 1; i<round; i++){
-			FileHelper.savePoint(path+ color[0]+i, i*4);
-			FileHelper.loadPoint(path+ color[0]+i);
-			FileHelper.savePoint(path+ color[1]+i, i*4+1);
-			FileHelper.loadPoint(path+ color[1]+i);
-			FileHelper.savePoint(path+ color[2]+i, i*4+2);
-			FileHelper.loadPoint(path+ color[2]+i);
-			FileHelper.savePoint(path+ color[3]+i, i*4+3);
-			FileHelper.loadPoint(path+ color[3]+i);
+			for(int j = 0; j <4; j++){
+				FileHelper.savePoint(path+ color[j]+i,i*4+j);
+
+			}
+
 		}
-		for(int i = 1; i<round; i++){
-			FileHelper.removePoint(i*4);
-			FileHelper.removePoint(i*4+1);
-			FileHelper.removePoint(i*4+2);
-			FileHelper.removePoint(i*4+3);
+		for(int i = 4; i<(round-1)*4; i++){
+			FileHelper.removePoint(4);
+			
 		}
 		int valid = 0;
 		
