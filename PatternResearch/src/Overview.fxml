@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="550.0" stylesheets="@menusheets.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainWithJavafx">
+   <children>
+      <SplitPane dividerPositions="0.35583941605839414" layoutX="53.0" layoutY="42.0" prefHeight="540.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="618.0" prefWidth="184.0">
+               <children>
+                  <VBox layoutX="2.0" layoutY="28.0" prefHeight="570.0" prefWidth="183.0" spacing="0.5" styleClass="custom-button" stylesheets="@menusheets.css">
+                     <children>
+                        <Pane id="pane1" prefHeight="78.0" prefWidth="183.0" style="-fx-background-color: BDE6BB; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
+                           <children>
+                              <Label layoutX="6.0" layoutY="9.0" prefHeight="15.0" prefWidth="177.0" text="1. Select Your Algorithm" textFill="#145429" />
+                              <RadioButton fx:id="mlperceptron" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleRadioButton1Action" prefHeight="18.0" prefWidth="113.0" text="MLPerceptron" />
+                              <RadioButton fx:id="svm" layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleRadioButton2Action" prefHeight="25.0" prefWidth="183.0" text="SVM" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="135.0" prefWidth="183.0" style="-fx-background-color: #9FD892; -fx-opaque-insets: 50; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
+                           <children>
+                              <Label layoutX="5.0" prefHeight="35.0" prefWidth="170.0" text="2. Find Your Data" textFill="#145429">
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
+                              </Label>
+                              <RadioButton fx:id="defaultset" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleDefaultAction" text="Default" />
+                              <RadioButton fx:id="oldsetting" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleOldAction" text="Loading Saved Data" />
+                           </children>
+                        </Pane>
+                        <Button fx:id="setdir" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="63.0" prefWidth="202.0" text="3. Edit Training Data" />
+                      <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="199.0" text="4. Make A Prediction!" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane id="01" minHeight="0.0" minWidth="0.0" prefHeight="564.0" prefWidth="349.0" styleClass="background" stylesheets="@menusheets.css">
+               <children>
+                  <TableView layoutX="4.0" layoutY="250.0" prefHeight="349.0" prefWidth="343.0">
+                    <columns>
+                      <TableColumn prefWidth="98.0" text="Result" />
+                      <TableColumn prefWidth="101.0" text="Accuracy" />
+                    </columns>
+                  </TableView>
+                  <TextArea fx:id="outputTextArea" layoutX="-2.0" layoutY="26.0" prefHeight="221.0" prefWidth="349.0" text="Description goes here~" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <MenuBar layoutY="-1.0" prefHeight="25.0" prefWidth="550.0" AnchorPane.topAnchor="-1.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="chooseDir" mnemonicParsing="false" onAction="#handleDirChooserAction" text="Set Working Directory" />
+              <MenuItem fx:id="savingdata" mnemonicParsing="false" onAction="#handleDirSavingAction" text="Set Saving Directory" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
