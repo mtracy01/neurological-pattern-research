@@ -50,12 +50,13 @@ public class MainWithJavafx extends Application {
     private RadioButton defaultset;
     @FXML
 	private TextArea outputTextArea;
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        // Button was clicked, do something...
-        outputTextArea.appendText("Button Action\n");
-    }
-    
+    @FXML 
+    private RadioButton add_new_data;
+    @FXML 
+    private RadioButton keep_data;
+    @FXML 
+    private RadioButton remove_data;
+   
     /*
      * Select MLPerceptron for prediction
      * Cannot select both SVM at the same time
@@ -148,8 +149,6 @@ public class MainWithJavafx extends Application {
     				+ "File -> set working directory\n"
     				+ "Here we go! Isn't it handy?");
     	}
-		
-    	
     }
     
     /* 
@@ -162,8 +161,51 @@ public class MainWithJavafx extends Application {
     	outputTextArea.clear();
     	outputTextArea.appendText("\n Loading previous data now \n");
     	//ParsedData parsedData = FileHelper.getParsedData(path);
-    	
     }
+    
+    @FXML
+    private void handleKeepDataAction(ActionEvent event) {
+        // Button was clicked, do something...
+        outputTextArea.appendText("Button Action\n");
+    }
+    
+    @FXML
+    private void handleRemoveDataAction(ActionEvent event) {
+        // Button was clicked, do something...
+        outputTextArea.appendText("Button Action\n");
+    }
+    
+    
+    @FXML
+    private void handleAddDataAction(ActionEvent event) {
+        // Button was clicked, do something...
+        outputTextArea.appendText("Button Action\n");
+    }
+    
+    
+    /* 
+     * Use learningType variable to decide which algorithm 
+     * will be used. The output should be updated to table content
+     * on the right.
+     */
+    @FXML
+    private void handlePredictionAction(ActionEvent event) {
+        // Button was clicked, do something...
+        outputTextArea.appendText("Button Action\n");
+    }
+    
+    @FXML
+    private void handleSavingDataAction(ActionEvent event) {
+        // Button was clicked, do something...
+        outputTextArea.appendText("Button Action\n");
+    }
+    
+    @FXML
+    private void handleExportAction(ActionEvent event) {
+        // Button was clicked, do something...
+        outputTextArea.appendText("Button Action\n");
+    }
+    
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
@@ -174,7 +216,7 @@ public class MainWithJavafx extends Application {
 	@FXML
 	private void initialize() {
 		// Handle Button event.
-		setdir.setOnAction(this::handleButtonAction);
+		//setdir.setOnAction(this::handleButtonAction);
 	}
 	/**
      * Initializes the root layout.

@@ -68,6 +68,7 @@ public class FileHelper {
 			e.printStackTrace();
 			return false;
 		}
+		//conditional to generate model
 		return true;
 	}
 	

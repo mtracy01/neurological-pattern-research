@@ -23,14 +23,14 @@
                <children>
                   <VBox layoutX="2.0" layoutY="28.0" prefHeight="570.0" prefWidth="183.0" spacing="0.5" styleClass="custom-button" stylesheets="@menusheets.css">
                      <children>
-                        <Pane id="pane1" prefHeight="78.0" prefWidth="183.0" style="-fx-background-color: BDE6BB; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
+                        <Pane id="pane1" prefHeight="91.0" prefWidth="183.0" style="-fx-background-color: D0ECCF; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
                            <children>
                               <Label layoutX="6.0" layoutY="9.0" prefHeight="15.0" prefWidth="177.0" text="1. Select Your Algorithm" textFill="#145429" />
                               <RadioButton fx:id="mlperceptron" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleRadioButton1Action" prefHeight="18.0" prefWidth="113.0" text="MLPerceptron" />
                               <RadioButton fx:id="svm" layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleRadioButton2Action" prefHeight="25.0" prefWidth="183.0" text="SVM" />
                            </children>
                         </Pane>
-                        <Pane prefHeight="135.0" prefWidth="183.0" style="-fx-background-color: #9FD892; -fx-opaque-insets: 50; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
+                        <Pane prefHeight="112.0" prefWidth="183.0" style="-fx-background-color: #C3DFBE; -fx-opaque-insets: 50; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
                            <children>
                               <Label layoutX="5.0" prefHeight="35.0" prefWidth="170.0" text="2. Find Your Data" textFill="#145429">
                                  <padding>
@@ -41,8 +41,21 @@
                               <RadioButton fx:id="oldsetting" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleOldAction" text="Loading Saved Data" />
                            </children>
                         </Pane>
-                        <Button fx:id="setdir" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="63.0" prefWidth="202.0" text="3. Edit Training Data" />
-                      <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="199.0" text="4. Make A Prediction!" />
+                        <Pane prefHeight="135.0" prefWidth="183.0" style="-fx-background-color: #A8D4C4; -fx-opaque-insets: 50; -fx-background-radius: 10px; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px;">
+                           <children>
+                              <Label layoutX="5.0" prefHeight="35.0" prefWidth="170.0" text="3. Edit Training Data" textFill="#145429">
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
+                              </Label>
+                              <RadioButton fx:id="keep_data" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleKeepDataAction" text="Keep all data " />
+                              <RadioButton fx:id="remove_data" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleRemoveDataAction" text="Remove data" />
+                              <RadioButton fx:id="add_new_data" layoutX="14.0" layoutY="82.0" mnemonicParsing="false" onAction="#handleAddDataAction" text="Add new data" />
+                           </children>
+                        </Pane>
+                        <Button fx:id="predict" mnemonicParsing="false" onAction="#handlePredictionAction" prefHeight="72.0" prefWidth="183.0" style="-fx-background-color: #AADBDB; -fx-background-radius: 10px; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-border-color: #8BC388;" text="4. Make A Prediction" />
+                      <Button mnemonicParsing="false" onAction="#handleSavingDataAction" prefHeight="75.0" prefWidth="183.0" style="-fx-background-color: ADC5DA; -fx-background-radius: 10px; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-border-color: #8BC388;" text="5. Save your data :)!" />
+                        <Button mnemonicParsing="false" onAction="#handleExportAction" prefHeight="75.0" prefWidth="183.0" style="-fx-background-color: #B3B6CE; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px; -fx-background-radius: 10px;" text="6. Export your report!" />
                      </children>
                   </VBox>
                </children>
