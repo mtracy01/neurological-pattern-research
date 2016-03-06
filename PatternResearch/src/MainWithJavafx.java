@@ -9,11 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -21,12 +18,13 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-
-import javax.swing.JFileChooser;
 import javax.xml.datatype.Duration;
 
 import LearningProcess.SVMLearningCore;
+import LearningProcess.ParsedDataLearningCore;
+import Objects.Data;
 import Objects.ParsedData;
+import Objects.Tuple;
 import helperClasses.FileHelper;
 
 
@@ -35,9 +33,10 @@ public class MainWithJavafx extends Application {
 	private Stage primaryStage;
     private BorderPane rootLayout;
     private int round = 2; // Testing purpose; need to be removed
-    public static int learningType = 1;
+    public static int learningType = -1; // MLPerceptron =1; SVM = 2;
     static File folder = null;
     static String path = null;
+    static ParsedData parsedData;
     @FXML
     private Button setdir;
     @FXML
@@ -92,7 +91,6 @@ public class MainWithJavafx extends Application {
     	File file = null;
     	while(file == null){
 	    	FileChooser fileChooser = new FileChooser();
-	    	outputTextArea.appendText("GG");
 	    	fileChooser.setTitle("Open Resource Directory");
 	    	file = fileChooser.showOpenDialog(null);
     	}
@@ -159,26 +157,51 @@ public class MainWithJavafx extends Application {
     private void handleOldAction(ActionEvent event) {
     	if(defaultset.isSelected()) defaultset.setSelected(false);
     	outputTextArea.clear();
-    	outputTextArea.appendText("\n Loading previous data now \n");
-    	//ParsedData parsedData = FileHelper.getParsedData(path);
+    	outputTextArea.appendText("\n Find your previous dataset file \n");
+    	File file = null;
+    	while(file == null ){
+	    	FileChooser chooser = new FileChooser();
+	    	chooser.setTitle("Open Resource Directory");
+	    	file = chooser.showOpenDialog(null);
+    	}
+		if(file != null ){
+			String filePath = folder.getAbsolutePath();
+			outputTextArea.appendText(filePath);
+			boolean loading = FileHelper.loadDataSet(filePath);
+			if(!loading){
+				outputTextArea.clear();
+				outputTextArea.appendText("\n Error when loading files!\n");
+			}
+		}
     }
     
     @FXML
     private void handleKeepDataAction(ActionEvent event) {
-        // Button was clicked, do something...
-        outputTextArea.appendText("Button Action\n");
+    	if(remove_data.isSelected() || add_new_data.isSelected()){ 
+    		remove_data.setSelected(false);
+    		add_new_data.setSelected(false);
+    	}
+        outputTextArea.appendText("Keep your data setting\n");
+        
+        
     }
     
     @FXML
     private void handleRemoveDataAction(ActionEvent event) {
-        // Button was clicked, do something...
+    	if(keep_data.isSelected() || add_new_data.isSelected()){
+    		keep_data.setSelected(false);
+    		add_new_data.setSelected(false);
+    	}
         outputTextArea.appendText("Button Action\n");
     }
     
     
     @FXML
     private void handleAddDataAction(ActionEvent event) {
-        // Button was clicked, do something...
+    	if(remove_data.isSelected() || keep_data.isSelected()) {
+    		keep_data.setSelected(false);
+    		remove_data.setSelected(false);
+    	}
         outputTextArea.appendText("Button Action\n");
     }
     
@@ -190,8 +213,31 @@ public class MainWithJavafx extends Application {
      */
     @FXML
     private void handlePredictionAction(ActionEvent event) {
-        // Button was clicked, do something...
-        outputTextArea.appendText("Button Action\n");
+    	File file = null;  		// File for color prediction 
+    	while(file == null ){
+	    	FileChooser chooser = new FileChooser();
+	    	chooser.setTitle("Open Resource Directory");
+	    	file = chooser.showOpenDialog(null);
+    	}
+		if(file != null ){
+			String filePath = folder.getAbsolutePath();
+			outputTextArea.appendText(filePath);
+			parsedData = FileHelper.loadCSVData(file,0);
+		}
+		if(parsedData != null){
+	    	if(learningType == 1){			//MLPerceptron 
+	    		Tuple<Double, String> tuple = ParsedDataLearningCore.testNeuralNetwork(parsedData);
+	    	}else if(learningType == 2){ 	//SVM
+	    		String result = SVMLearningCore.classifyData(parsedData);
+	    		outputTextArea.appendText("SVM: "+result);
+	    	}else{							//Error! No Algorithm is specified
+	    		outputTextArea.clear();
+	    		outputTextArea.appendText("Oops! Something goes wrong :/ \n"
+	    				+ "Which algorithm do you wanna try?\n");
+	    	}
+		}
+		else outputTextArea.appendText("\n File has invalid form :(\n");
+        
     }
     
     @FXML
