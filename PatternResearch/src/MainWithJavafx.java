@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +24,7 @@ import javax.xml.datatype.Duration;
 import LearningProcess.SVMLearningCore;
 import LearningProcess.ParsedDataLearningCore;
 import Objects.Data;
+import Objects.NormalizeData;
 import Objects.ParsedData;
 import Objects.Tuple;
 import helperClasses.FileHelper;
@@ -88,16 +90,19 @@ public class MainWithJavafx extends Application {
      */
     @FXML
     private void handleDirChooserAction(ActionEvent event) {
-    	File file = null;
-    	while(file == null){
-	    	FileChooser fileChooser = new FileChooser();
-	    	fileChooser.setTitle("Open Resource Directory");
-	    	file = fileChooser.showOpenDialog(null);
-    	}
+	    FileChooser fileChooser = new FileChooser();
+	    fileChooser.setTitle("Open Resource Directory");
+	    File file = fileChooser.showOpenDialog(null);
     	if(file != null ){
     		folder = file.getParentFile();
     		String dirPath = folder.getAbsolutePath();
     		outputTextArea.appendText(dirPath);
+    	}
+    	else{
+    		outputTextArea.clear();
+    		outputTextArea.appendText("Action cancelled\n"
+    				+ "No file selected\n");
+    		defaultset.setSelected(false);
     	}
     }
     
@@ -120,6 +125,8 @@ public class MainWithJavafx extends Application {
     /* 
      * All Data comes from the directory which has been 
      * set earlier(File -> Set working directory)
+     * 
+     * 2. RaioButton: Default
      */
     @FXML
     private void handleDefaultAction(ActionEvent event) {
@@ -152,18 +159,17 @@ public class MainWithJavafx extends Application {
     /* 
      * All Data comes from the directory which has been 
      * set earlier(File -> Set working directory)
+     * 
+     * 2. RadioButton: Loading Saved Data
      */
     @FXML
     private void handleOldAction(ActionEvent event) {
     	if(defaultset.isSelected()) defaultset.setSelected(false);
     	outputTextArea.clear();
     	outputTextArea.appendText("\n Find your previous dataset file \n");
-    	File file = null;
-    	while(file == null ){
-	    	FileChooser chooser = new FileChooser();
-	    	chooser.setTitle("Open Resource Directory");
-	    	file = chooser.showOpenDialog(null);
-    	}
+	    FileChooser chooser = new FileChooser();
+	    chooser.setTitle("Open Resource Directory");
+	    File file = chooser.showOpenDialog(null);
 		if(file != null ){
 			String filePath = folder.getAbsolutePath();
 			outputTextArea.appendText(filePath);
@@ -173,8 +179,19 @@ public class MainWithJavafx extends Application {
 				outputTextArea.appendText("\n Error when loading files!\n");
 			}
 		}
+		else{
+			outputTextArea.clear();
+			outputTextArea.appendText("Action cancelled\n"
+    				+ "No file selected\n");
+			oldsetting.setSelected(false);
+		}
     }
     
+    /*
+     * Use current parsed data set you have for training
+     * 
+     * 3.RadioButton: Keep all data
+     */
     @FXML
     private void handleKeepDataAction(ActionEvent event) {
     	if(remove_data.isSelected() || add_new_data.isSelected()){ 
@@ -186,6 +203,11 @@ public class MainWithJavafx extends Application {
         
     }
     
+    /*
+     * Remove certain color set from current training set
+     * 
+     * 3. RadioButton: Remove data
+     */
     @FXML
     private void handleRemoveDataAction(ActionEvent event) {
     	if(keep_data.isSelected() || add_new_data.isSelected()){
@@ -195,7 +217,11 @@ public class MainWithJavafx extends Application {
         outputTextArea.appendText("Button Action\n");
     }
     
-    
+    /*
+     * Add certain color set to current training set
+     * 
+     * 3. RadioButton: Add new data
+     */
     @FXML
     private void handleAddDataAction(ActionEvent event) {
     	if(remove_data.isSelected() || keep_data.isSelected()) {
@@ -210,6 +236,8 @@ public class MainWithJavafx extends Application {
      * Use learningType variable to decide which algorithm 
      * will be used. The output should be updated to table content
      * on the right.
+     * 
+     * 4. Make a prediction
      */
     @FXML
     private void handlePredictionAction(ActionEvent event) {
@@ -220,17 +248,21 @@ public class MainWithJavafx extends Application {
 	    	file = chooser.showOpenDialog(null);
     	}
 		if(file != null ){
-			String filePath = folder.getAbsolutePath();
+			String filePath = file.getAbsolutePath();
 			outputTextArea.appendText(filePath);
 			parsedData = FileHelper.loadCSVData(file,0);
 		}
 		if(parsedData != null){
-	    	if(learningType == 1){			//MLPerceptron 
+	    	if(learningType == 1 &&  Data.parsedData != null){			//MLPerceptron 
 	    		Tuple<Double, String> tuple = ParsedDataLearningCore.testNeuralNetwork(parsedData);
-	    	}else if(learningType == 2){ 	//SVM
+	    	}else if(learningType == 2 && Data.parsedData != null){ 	//SVM
+	    		parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    		String result = SVMLearningCore.classifyData(parsedData);
 	    		outputTextArea.appendText("SVM: "+result);
-	    	}else{							//Error! No Algorithm is specified
+	    	}else if( Data.parsedData == null){     //No Training Data
+	    		outputTextArea.clear();
+	    		outputTextArea.appendText("Hmm Did you add your training set?\n");				
+	    	}else{						//Error! No Algorithm is specified
 	    		outputTextArea.clear();
 	    		outputTextArea.appendText("Oops! Something goes wrong :/ \n"
 	    				+ "Which algorithm do you wanna try?\n");
