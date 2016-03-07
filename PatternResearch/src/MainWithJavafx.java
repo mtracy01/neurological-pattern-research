@@ -1,5 +1,3 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,12 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -43,7 +39,7 @@ public class MainWithJavafx extends Application {
     public static int learningType = -1; // MLPerceptron =1; SVM = 2;
     static File folder = null;
     static String path = null;
-    static ParsedData parsedData;
+
     @FXML
     private Button setdir;
     @FXML
@@ -239,7 +235,6 @@ public class MainWithJavafx extends Application {
 				@Override
 				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 					if(newValue.intValue() >=0){
-						outputTextArea.appendText("\n "+newValue.intValue()+"\n");
 						results.remove(newValue.intValue());
 						choice.setItems(FXCollections.observableArrayList(results));
 						FileHelper.removePoint(newValue.intValue());
@@ -261,7 +256,18 @@ public class MainWithJavafx extends Application {
     		keep_data.setSelected(false);
     		remove_data.setSelected(false);
     	}
-        outputTextArea.appendText("Button Action\n");
+    	ParsedData pd = null;
+    	FileChooser chooser = new FileChooser();
+	    chooser.setTitle("Open Resource Directory");
+	    File file = chooser.showOpenDialog(null);     // File for color prediction 
+		if(file != null ){
+			String filePath = file.getAbsolutePath();
+			outputTextArea.appendText(filePath);
+			pd = FileHelper.loadCSVData(file,0);
+		}
+		if(pd == null){
+			outputTextArea.appendText("\n Cannot add this file :/\n");
+		}
     }
     
     
@@ -274,23 +280,22 @@ public class MainWithJavafx extends Application {
      */
     @FXML
     private void handlePredictionAction(ActionEvent event) {
-    	File file = null;  		// File for color prediction 
-    	while(file == null ){
-	    	FileChooser chooser = new FileChooser();
-	    	chooser.setTitle("Open Resource Directory");
-	    	file = chooser.showOpenDialog(null);
-    	}
+    	boolean add = false;
+    	ParsedData parsedData = null;
+	    FileChooser chooser = new FileChooser();
+	    chooser.setTitle("Open Resource Directory");
+	    File file = chooser.showOpenDialog(null);     // File for color prediction 
 		if(file != null ){
 			String filePath = file.getAbsolutePath();
 			outputTextArea.appendText(filePath);
-			parsedData = FileHelper.loadCSVData(file,0);
+			parsedData = FileHelper.getParsedData(filePath);
 		}
 		if(parsedData != null){
 	    	if(learningType == 1 &&  !Data.parsedData.isEmpty()){			//MLPerceptron 
 	    		Tuple<Double, String> tuple = ParsedDataLearningCore.testNeuralNetwork(parsedData);
 	    	}else if(learningType == 2 && !Data.parsedData.isEmpty()){ 	//SVM
 	    		SVMLearningCore.createSVM();
-	    		parsedData = NormalizeData.normalizeParsedData(parsedData);
+	    		//parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    		String result = SVMLearningCore.classifyData(parsedData);
 	    		outputTextArea.appendText("SVM: "+result);
 	    	}else if( Data.parsedData.isEmpty()){     //No Training Data
