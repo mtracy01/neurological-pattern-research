@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -50,19 +51,20 @@
                               </Label>
                               <RadioButton fx:id="keep_data" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleKeepDataAction" text="Keep all data " />
                               <RadioButton fx:id="remove_data" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleRemoveDataAction" text="Remove data" />
-                              <RadioButton fx:id="add_new_data" layoutX="14.0" layoutY="82.0" mnemonicParsing="false" onAction="#handleAddDataAction" text="Add new data" />
+                              <RadioButton fx:id="add_new_data" layoutX="14.0" layoutY="113.0" mnemonicParsing="false" onAction="#handleAddDataAction" text="Add new data" />
+                              <ChoiceBox fx:id="choice" layoutX="25.0" layoutY="82.0" prefWidth="150.0" />
                            </children>
                         </Pane>
                         <Button fx:id="predict" mnemonicParsing="false" onAction="#handlePredictionAction" prefHeight="72.0" prefWidth="183.0" style="-fx-background-color: #AADBDB; -fx-background-radius: 10px; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-border-color: #8BC388;" text="4. Make A Prediction" />
                       <Button mnemonicParsing="false" onAction="#handleSavingDataAction" prefHeight="75.0" prefWidth="183.0" style="-fx-background-color: ADC5DA; -fx-background-radius: 10px; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-border-color: #8BC388;" text="5. Save your data :)!" />
-                        <Button mnemonicParsing="false" onAction="#handleExportAction" prefHeight="75.0" prefWidth="183.0" style="-fx-background-color: #B3B6CE; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px; -fx-background-radius: 10px;" text="6. Export your report!" />
+                        <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="183.0" style="-fx-background-color: #B3B6CE; -fx-border-color: #8BC388; -fx-border-radius: 10px; -fx-border-width: 2px; -fx-background-radius: 10px;" text="6. Export your report!" />
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
           <AnchorPane id="01" minHeight="0.0" minWidth="0.0" prefHeight="564.0" prefWidth="349.0" styleClass="background" stylesheets="@menusheets.css">
                <children>
-                  <TableView layoutX="4.0" layoutY="250.0" prefHeight="349.0" prefWidth="343.0">
+                  <TableView layoutX="-2.0" layoutY="247.0" prefHeight="349.0" prefWidth="349.0">
                     <columns>
                       <TableColumn prefWidth="98.0" text="Result" />
                       <TableColumn prefWidth="101.0" text="Accuracy" />

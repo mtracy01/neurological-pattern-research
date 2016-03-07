@@ -1,12 +1,16 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -19,7 +23,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import javax.xml.datatype.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import LearningProcess.SVMLearningCore;
 import LearningProcess.ParsedDataLearningCore;
@@ -57,7 +62,9 @@ public class MainWithJavafx extends Application {
     private RadioButton keep_data;
     @FXML 
     private RadioButton remove_data;
-   
+    @FXML
+	private ChoiceBox<String> choice;
+
     /*
      * Select MLPerceptron for prediction
      * Cannot select both SVM at the same time
@@ -137,13 +144,14 @@ public class MainWithJavafx extends Application {
     	if(folder != null){
     		//TODO: Matthew's function(read all csv files under dirPath)
     		//Testing Purpose START
+    		Data.clear();
 			File[] allfiles = folder.listFiles();
 			for(int i = 0; i < round; i++){
 				for(int j = 0; j < 4; j++){
 					File fileb = allfiles[i+j*10];
-	    			FileHelper.loadCSVData(fileb,0);
+	    			FileHelper.loadCSVData(fileb,0); //Data is stored in Data.parsedData for training
 				}
-				SVMLearningCore.createSVM();
+				//SVMLearningCore.createSVM();
 			}
 			//Testing Purpose. END
     	}
@@ -171,6 +179,7 @@ public class MainWithJavafx extends Application {
 	    chooser.setTitle("Open Resource Directory");
 	    File file = chooser.showOpenDialog(null);
 		if(file != null ){
+			Data.clear();
 			String filePath = folder.getAbsolutePath();
 			outputTextArea.appendText(filePath);
 			boolean loading = FileHelper.loadDataSet(filePath);
@@ -199,8 +208,10 @@ public class MainWithJavafx extends Application {
     		add_new_data.setSelected(false);
     	}
         outputTextArea.appendText("Keep your data setting\n");
-        
-        
+        if(Data.parsedData.isEmpty() ){
+        	outputTextArea.appendText("\n NULL data\n"
+        			+ "Make sure you add training set\n");
+        }
     }
     
     /*
@@ -214,7 +225,29 @@ public class MainWithJavafx extends Application {
     		keep_data.setSelected(false);
     		add_new_data.setSelected(false);
     	}
-        outputTextArea.appendText("Button Action\n");
+    	if(Data.parsedData.isEmpty() ){
+        	outputTextArea.appendText("\n No training data available\n");
+        }
+    	else{
+    		String[] sresults = Data.getRecordingNames();
+    		ArrayList<String> results = new ArrayList<String>(Arrays.asList(sresults)); 
+    		for(int i = 0; i < results.size(); i++){
+    			outputTextArea.appendText("\n "+results.get(i)+"\n");
+    		}
+    		choice.setItems(FXCollections.observableArrayList(results));
+    		choice.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>(){
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+					if(newValue.intValue() >=0){
+						outputTextArea.appendText("\n "+newValue.intValue()+"\n");
+						results.remove(newValue.intValue());
+						choice.setItems(FXCollections.observableArrayList(results));
+						FileHelper.removePoint(newValue.intValue());
+						remove_data.setSelected(false);
+					}
+				}
+    		});
+    	}
     }
     
     /*
@@ -253,13 +286,14 @@ public class MainWithJavafx extends Application {
 			parsedData = FileHelper.loadCSVData(file,0);
 		}
 		if(parsedData != null){
-	    	if(learningType == 1 &&  Data.parsedData != null){			//MLPerceptron 
+	    	if(learningType == 1 &&  !Data.parsedData.isEmpty()){			//MLPerceptron 
 	    		Tuple<Double, String> tuple = ParsedDataLearningCore.testNeuralNetwork(parsedData);
-	    	}else if(learningType == 2 && Data.parsedData != null){ 	//SVM
+	    	}else if(learningType == 2 && !Data.parsedData.isEmpty()){ 	//SVM
+	    		SVMLearningCore.createSVM();
 	    		parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    		String result = SVMLearningCore.classifyData(parsedData);
 	    		outputTextArea.appendText("SVM: "+result);
-	    	}else if( Data.parsedData == null){     //No Training Data
+	    	}else if( Data.parsedData.isEmpty()){     //No Training Data
 	    		outputTextArea.clear();
 	    		outputTextArea.appendText("Hmm Did you add your training set?\n");				
 	    	}else{						//Error! No Algorithm is specified
