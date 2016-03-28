@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 import LearningProcess.SVMLearningCore;
 import LearningProcess.ParsedDataLearningCore;
 import Objects.Data;
@@ -138,18 +141,22 @@ public class MainWithJavafx extends Application {
     	outputTextArea.appendText("\n All csv files under the working directory"
     			+ " will be converted to the correct format. \n");
     	if(folder != null){
-    		//TODO: Matthew's function(read all csv files under dirPath)
-    		//Testing Purpose START
     		Data.clear();
 			File[] allfiles = folder.listFiles();
 			for(int i = 0; i < round; i++){
 				for(int j = 0; j < 4; j++){
 					File fileb = allfiles[i+j*10];
 	    			FileHelper.loadCSVData(fileb,0); //Data is stored in Data.parsedData for training
+	    			if(learningType == 1){
+	    				ParsedDataLearningCore.createMLPerceptron();
+	    			}else if(learningType ==2){
+	    				SVMLearningCore.createSVM();
+	    			}else{
+	    				outputTextArea.clear();
+	    		    	outputTextArea.appendText("\n No Learning Algorithm is selected\n");
+	    			}
 				}
-				//SVMLearningCore.createSVM();
 			}
-			//Testing Purpose. END
     	}
     	else{
     		outputTextArea.clear();
@@ -277,6 +284,7 @@ public class MainWithJavafx extends Application {
      * on the right.
      * 
      * 4. Make a prediction
+     * 
      */
     @FXML
     private void handlePredictionAction(ActionEvent event) {
@@ -291,12 +299,15 @@ public class MainWithJavafx extends Application {
 			parsedData = FileHelper.getParsedData(filePath);
 		}
 		if(parsedData != null){
+			parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    	if(learningType == 1 &&  !Data.parsedData.isEmpty()){			//MLPerceptron 
-	    		Tuple<Double, String> tuple = ParsedDataLearningCore.testNeuralNetwork(parsedData);
+	    		Tuple<Double,String>result = ParsedDataLearningCore.testNeuralNetwork(parsedData);
+	    		outputTextArea.clear();
+	    		outputTextArea.appendText("Multilayer Perceptron: "+result);
 	    	}else if(learningType == 2 && !Data.parsedData.isEmpty()){ 	//SVM
-	    		SVMLearningCore.createSVM();
 	    		//parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    		String result = SVMLearningCore.classifyData(parsedData);
+	    		outputTextArea.clear();
 	    		outputTextArea.appendText("SVM: "+result);
 	    	}else if( Data.parsedData.isEmpty()){     //No Training Data
 	    		outputTextArea.clear();
