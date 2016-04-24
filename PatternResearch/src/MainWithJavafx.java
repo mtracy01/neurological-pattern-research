@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -38,11 +39,12 @@ public class MainWithJavafx extends Application {
 	
 	private Stage primaryStage;
     private BorderPane rootLayout;
-    private int round = 2; // Testing purpose; need to be removed
+    private int round = 3; // Testing purpose; need to be removed
     public static int learningType = -1; // MLPerceptron =1; SVM = 2;
     static File folder = null;
     static String path = null;
-
+    ArrayList<String> results = new ArrayList<String>();
+    ArrayList<File> allfiles = new ArrayList<File>();
     @FXML
     private Button setdir;
     @FXML
@@ -96,20 +98,11 @@ public class MainWithJavafx extends Application {
      */
     @FXML
     private void handleDirChooserAction(ActionEvent event) {
-	    FileChooser fileChooser = new FileChooser();
-	    fileChooser.setTitle("Open Resource Directory");
-	    File file = fileChooser.showOpenDialog(null);
-    	if(file != null ){
-    		folder = file.getParentFile();
-    		String dirPath = folder.getAbsolutePath();
-    		outputTextArea.appendText(dirPath);
-    	}
-    	else{
-    		outputTextArea.clear();
-    		outputTextArea.appendText("Action cancelled\n"
-    				+ "No file selected\n");
-    		defaultset.setSelected(false);
-    	}
+    	DirectoryChooser chooser = new DirectoryChooser();
+	    chooser.setTitle("Select Directory");
+	    folder = chooser.showDialog(primaryStage);
+    	path = folder.getAbsolutePath();
+    	outputTextArea.appendText(path);
     }
     
     /*
@@ -142,20 +135,22 @@ public class MainWithJavafx extends Application {
     			+ " will be converted to the correct format. \n");
     	if(folder != null){
     		Data.clear();
+    		File[] temp_all = folder.listFiles();
+    		allfiles.addAll(Arrays.asList(temp_all));
 			File[] allfiles = folder.listFiles();
 			for(int i = 0; i < round; i++){
-				for(int j = 0; j < 4; j++){
-					File fileb = allfiles[i+j*10];
+				for(int j = 0; j <= 10; j++){
+					File fileb = allfiles[i+j*3];
 	    			FileHelper.loadCSVData(fileb,0); //Data is stored in Data.parsedData for training
-	    			if(learningType == 1){
-	    				ParsedDataLearningCore.createMLPerceptron();
-	    			}else if(learningType ==2){
-	    				SVMLearningCore.createSVM();
-	    			}else{
-	    				outputTextArea.clear();
-	    		    	outputTextArea.appendText("\n No Learning Algorithm is selected\n");
-	    			}
 				}
+	    		if(learningType == 1){
+	    		  ParsedDataLearningCore.createMLPerceptron();
+	    		}else if(learningType ==2){
+	    		  SVMLearningCore.createSVM();
+	    		}else{
+	    		   outputTextArea.clear();
+	    		   outputTextArea.appendText("\n No Learning Algorithm is selected\n");
+	    		}
 			}
     	}
     	else{
@@ -288,8 +283,16 @@ public class MainWithJavafx extends Application {
      */
     @FXML
     private void handlePredictionAction(ActionEvent event) {
-    	boolean add = false;
     	ParsedData parsedData = null;
+    	if(learningType == 1){
+  		  ParsedDataLearningCore.createMLPerceptron();
+  		}else if(learningType ==2){
+  			System.out.println("Oops");
+  		  SVMLearningCore.createSVM();
+  		}else{
+  		   outputTextArea.clear();
+  		   outputTextArea.appendText("\n No Learning Algorithm is selected\n");
+  		}
 	    FileChooser chooser = new FileChooser();
 	    chooser.setTitle("Open Resource Directory");
 	    File file = chooser.showOpenDialog(null);     // File for color prediction 
@@ -299,16 +302,16 @@ public class MainWithJavafx extends Application {
 			parsedData = FileHelper.getParsedData(filePath);
 		}
 		if(parsedData != null){
-			parsedData = NormalizeData.normalizeParsedData(parsedData);
+			//parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    	if(learningType == 1 &&  !Data.parsedData.isEmpty()){			//MLPerceptron 
 	    		Tuple<Double,String>result = ParsedDataLearningCore.testNeuralNetwork(parsedData);
 	    		outputTextArea.clear();
 	    		outputTextArea.appendText("Multilayer Perceptron: "+result);
 	    	}else if(learningType == 2 && !Data.parsedData.isEmpty()){ 	//SVM
-	    		//parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    		String result = SVMLearningCore.classifyData(parsedData);
 	    		outputTextArea.clear();
 	    		outputTextArea.appendText("SVM: "+result);
+	    		results.add(result);
 	    	}else if( Data.parsedData.isEmpty()){     //No Training Data
 	    		outputTextArea.clear();
 	    		outputTextArea.appendText("Hmm Did you add your training set?\n");				
@@ -326,6 +329,8 @@ public class MainWithJavafx extends Application {
     private void handleSavingDataAction(ActionEvent event) {
         // Button was clicked, do something...
         outputTextArea.appendText("Button Action\n");
+        outputTextArea.clear();
+        
     }
     
     @FXML
