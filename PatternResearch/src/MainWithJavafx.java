@@ -280,15 +280,6 @@ public class MainWithJavafx extends Application {
     @FXML
     private void handlePredictionAction(ActionEvent event) {
     	ParsedData parsedData = null;
-    	if(learningType == 1&&learningTime ==0){
-  		  ParsedDataLearningCore.createMLPerceptron();
-  		}else if(learningType ==2&&learningTime ==0){
-  			System.out.println("Oops");
-  		    SVMLearningCore.createSVM();
-  		}else{
-  		   outputTextArea.clear();
-  		}
-    	learningTime = 1;
 	    FileChooser chooser = new FileChooser();
 	    chooser.setTitle("Open Resource Directory");
 	    File file = chooser.showOpenDialog(null);     // File for color prediction 
@@ -298,14 +289,15 @@ public class MainWithJavafx extends Application {
 			parsedData = FileHelper.getParsedData(filePath);
 		}
 		if(parsedData != null){
-			if(learningType == 1){
+	    	if(learningType == 1&&learningTime ==0){
 	    		  ParsedDataLearningCore.createMLPerceptron();
-	    	}else if(learningType ==2){
-	    		 SVMLearningCore.createSVM();
+	    	}else if(learningType ==2&&learningTime ==0){ 
+	    		for(int i = 0; i < 2; i++)
+	    		    SVMLearningCore.createSVM();
 	    	}else{
-	    		  outputTextArea.clear();
-	    		  outputTextArea.appendText("\n No Learning Algorithm is selected\n");
+	    		   outputTextArea.clear();
 	    	}
+	    	learningTime = 1;
 			//parsedData = NormalizeData.normalizeParsedData(parsedData);
 	    	if(learningType == 1 &&  !Data.parsedData.isEmpty()){			//MLPerceptron 
 	    		Tuple<Double,String>result = ParsedDataLearningCore.testNeuralNetwork(parsedData);
